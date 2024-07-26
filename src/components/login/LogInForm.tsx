@@ -6,6 +6,7 @@ import Cancel from "@mui/icons-material/Cancel";
 import { ChangeEvent, FormEvent, useState } from "react";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import Link from "next/link";
 
 export default function LoginForm() {
   const { formData, updateFormData } = useForm(["id", "password"]);
@@ -41,12 +42,13 @@ export default function LoginForm() {
 
   return (
     <div className="flex w-100">
-      <form onSubmit={handleLogin} className="w-full flex flex-col gap-8">
+      <form onSubmit={handleLogin} className="w-full flex flex-col gap-4">
         <div>
           <TextField
             label="아이디"
             value={formData.id.value}
             onChange={handleIdInput}
+            fullWidth
             InputProps={{
               endAdornment:
                 formData.id.value !== "" ? (
@@ -55,7 +57,6 @@ export default function LoginForm() {
                   </IconButton>
                 ) : null,
             }}
-            fullWidth
           />
         </div>
         <div>
@@ -64,6 +65,7 @@ export default function LoginForm() {
             value={formData.password.value}
             type={showPassword ? "text" : "password"}
             onChange={handlePasswordInput}
+            fullWidth
             InputProps={{
               endAdornment: (
                 <>
@@ -78,11 +80,13 @@ export default function LoginForm() {
                 </>
               ),
             }}
-            fullWidth
           />
         </div>
+        <div className="text-right">
+          <Link href="">아이디 찾기</Link> | <Link href="">비밀번호 찾기</Link>
+        </div>
         {error.state && <FormHelperText error>{error.message}</FormHelperText>}
-        <Button type="submit" variant="contained" size="large" disableElevation>
+        <Button type="submit" variant="contained" size="large" className="mt-6" disableElevation>
           로그인
         </Button>
       </form>
