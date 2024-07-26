@@ -28,7 +28,7 @@ export default function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="w-full">
       <TextField
         variant="standard"
         value={input}
