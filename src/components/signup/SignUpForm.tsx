@@ -24,26 +24,23 @@ export default function SignUpForm() {
   const [isChecked, setIsChecked] = useState({ tos: false, pp: false });
   const [isFormError, setIsFormError] = useState(false);
 
-  const handleIdInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
-    if (input.length > 20) return;
-    updateFormData("id", input);
-  };
+    const name = e.target.name;
 
-  const handleEmailInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
-    updateFormData("email", input);
-  };
+    if (name === "id" && input.length > 20) return;
+    if ((name === "confirmationCode" && !NUMBER_REGEX.test(input)) || input.length > 6) return;
 
-  const handlePasswordInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
-    updateFormData("password", input);
+    updateFormData(name, input);
   };
 
   const validatePassword: FocusEventHandler<HTMLInputElement> = (e) => {
     const input = e.target.value;
     if (input.length > 0 && input.length < 8) {
       updateFormData("password", input, true, "* 비밀번호는 8자리 이상이어야 합니다.");
+    }
+    if (formData.passwordConfirm.value && formData.password.value !== formData.passwordConfirm.value) {
+      updateFormData("passwordConfirm", formData.passwordConfirm.value, true, "* 비밀번호가 일치하지 않습니다.");
     }
   };
 
@@ -54,18 +51,7 @@ export default function SignUpForm() {
     updateFormData("passwordConfirm", input, error, errorMsg);
   };
 
-  const handleConfirmationCodeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
-    if (!NUMBER_REGEX.test(input) || input.length > 6) return;
-    updateFormData("confirmationCode", input);
-  };
-
-  const handlePasswordConfirmInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
-    updateFormData("passwordConfirm", input);
-  };
-
-  const handleCheck = (e: ChangeEvent<HTMLInputElement>, ...keys: string[]) => {
+  const handleCheckbox = (e: ChangeEvent<HTMLInputElement>, ...keys: string[]) => {
     setIsChecked((prev) => {
       const checkedStatus = { ...prev };
       keys.forEach((key) => (checkedStatus[key as keyof typeof prev] = e.target.checked));
@@ -94,18 +80,38 @@ export default function SignUpForm() {
   };
 
   const validateFields = () => {
-    if (formData.id.value === "") updateFormData("id", "", true, "* 아이디를 입력해주세요.");
-    if (formData.email.value === "") updateFormData("email", "", true, "* 이메일을 입력해주세요.");
-    if (formData.password.value === "") updateFormData("password", "", true, "* 비밀번호를 입력해주세요.");
+    let isValid = true;
+    if (formData.id.value === "") {
+      updateFormData("id", "", true, "* 아이디를 입력해주세요.");
+      isValid = false;
+    }
+    if (formData.email.value === "") {
+      updateFormData("email", "", true, "* 이메일이 인증되지 않았습니다.");
+      isValid = false;
+    }
+    if (formData.password.value === "") {
+      updateFormData("password", "", true, "* 비밀번호를 입력해주세요.");
+      isValid = false;
+    }
+    if (formData.passwordConfirm.value === "") {
+      updateFormData("passwordConfirm", "", true, "* 비밀번호를 확인해주세요.");
+      isValid = false;
+    }
+    return isValid;
   };
 
-  const validateAgreements = () => isChecked.tos && isChecked.pp;
+  const validateAgreements = () => {
+    const isValid = isChecked.tos && isChecked.pp;
+    setIsFormError(!isValid);
+    return isValid;
+  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    validateFields();
-    const isValid = validateAgreements();
-    if (!isValid) return setIsFormError(true);
+    const isValidForm = validateFields();
+    const isValidAgreements = validateAgreements();
+    if (!isValidForm || !isValidAgreements) return;
+    alert("submitted");
   };
 
   return (
@@ -115,10 +121,11 @@ export default function SignUpForm() {
           <FormControl variant="outlined" fullWidth>
             <InputLabel error={formData.id.error}>아이디</InputLabel>
             <OutlinedInput
+              name="id"
               label="아이디"
               value={formData.id.value}
-              onChange={handleIdInput}
               error={formData.id.error}
+              onChange={handleInput}
               endAdornment={
                 <InputAdornment position="end">
                   <Button variant="contained" size="small" onClick={validateUsername} disableElevation>
@@ -134,10 +141,11 @@ export default function SignUpForm() {
           <FormControl variant="outlined" fullWidth>
             <InputLabel error={formData.email.error}>이메일</InputLabel>
             <OutlinedInput
+              name="email"
               label="이메일"
               value={formData.email.value}
-              onChange={handleEmailInput}
               error={formData.email.error}
+              onChange={handleInput}
               endAdornment={
                 <InputAdornment position="end">
                   <Button variant="contained" size="small" onClick={validateEmail} disableElevation>
@@ -153,10 +161,11 @@ export default function SignUpForm() {
           <FormControl variant="outlined" fullWidth>
             <InputLabel error={formData.confirmationCode.error}>인증번호</InputLabel>
             <OutlinedInput
+              name="confirmationCode"
               label="인증번호"
               value={formData.confirmationCode.value}
-              onChange={handleConfirmationCodeInput}
               error={formData.confirmationCode.error}
+              onChange={handleInput}
               endAdornment={
                 <InputAdornment position="end" className="flex gap-3">
                   03:15
@@ -175,12 +184,13 @@ export default function SignUpForm() {
           <FormControl variant="outlined" fullWidth>
             <InputLabel error={formData.password.error}>비밀번호</InputLabel>
             <OutlinedInput
+              name="password"
               label="비밀번호"
               type={showPassword ? "text" : "password"}
               value={formData.password.value}
-              onChange={handlePasswordInput}
-              onBlur={validatePassword}
               error={formData.password.error}
+              onChange={handleInput}
+              onBlur={validatePassword}
               endAdornment={
                 <IconButton onClick={handlePasswordVisibility}>
                   {showPassword ? <Visibility /> : <VisibilityOff />}
@@ -194,12 +204,13 @@ export default function SignUpForm() {
           <FormControl variant="outlined" fullWidth>
             <InputLabel error={formData.passwordConfirm.error}>비밀번호 확인</InputLabel>
             <OutlinedInput
+              name="passwordConfirm"
               label="비밀번호 확인"
               type={showConfirmationPassword ? "text" : "password"}
               value={formData.passwordConfirm.value}
-              onChange={handlePasswordConfirmInput}
-              onBlur={validatePasswordConfirm}
               error={formData.passwordConfirm.error}
+              onChange={handleInput}
+              onBlur={validatePasswordConfirm}
               endAdornment={
                 <IconButton onClick={handleConfirmationPasswordVisibility}>
                   {showConfirmationPassword ? <Visibility /> : <VisibilityOff />}
@@ -214,15 +225,17 @@ export default function SignUpForm() {
         <div>
           <FormControlLabel
             label="모두 동의합니다."
-            control={<Checkbox checked={isChecked.tos && isChecked.pp} onChange={(e) => handleCheck(e, "tos", "pp")} />}
+            control={
+              <Checkbox checked={isChecked.tos && isChecked.pp} onChange={(e) => handleCheckbox(e, "tos", "pp")} />
+            }
           />
           <FormControlLabel
             label="서비스 이용약관에 동의합니다. (필수)"
-            control={<Checkbox checked={isChecked.tos} onChange={(e) => handleCheck(e, "tos")} />}
+            control={<Checkbox checked={isChecked.tos} onChange={(e) => handleCheckbox(e, "tos")} />}
           />
           <FormControlLabel
             label="개인정보 처리방침에 동의합니다. (필수)"
-            control={<Checkbox checked={isChecked.pp} onChange={(e) => handleCheck(e, "pp")} />}
+            control={<Checkbox checked={isChecked.pp} onChange={(e) => handleCheckbox(e, "pp")} />}
           />
           {isFormError && <FormHelperText error>* 필수 약관에 동의해주세요.</FormHelperText>}
         </div>
