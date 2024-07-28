@@ -10,7 +10,7 @@ export default function Home() {
   const [selectedOption, setSelectedOption] = useState("과목명순");
 
   return (
-    <main className="flex flex-col items-center justify-between w-200 gap-10 min-h-[calc(100dvh-6rem)] py-32">
+    <main className="flex flex-col items-center justify-between w-200 gap-10 py-32">
       <SearchBar />
       <div className="w-full flex flex-col gap-3">
         <div className="w-36 self-end">

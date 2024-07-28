@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NavBar />
-        <main className="grid place-content-center">{children}</main>
+        <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
         <Footer />
       </body>
     </html>
