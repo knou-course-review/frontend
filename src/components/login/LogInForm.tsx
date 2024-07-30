@@ -1,32 +1,21 @@
 "use client";
 
-import useForm from "@/hooks/useForm";
-import { Button, FormHelperText, IconButton, TextField } from "@mui/material";
-import Cancel from "@mui/icons-material/Cancel";
-import { ChangeEvent, FormEvent, useState } from "react";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 import Link from "next/link";
+import Cancel from "@mui/icons-material/Cancel";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Button, FormHelperText, IconButton, TextField } from "@mui/material";
+import useForm from "@/hooks/useForm";
 
 export default function LoginForm() {
-  const { formData, updateFormData } = useForm(["id", "password"]);
+  const { formData, updateFormData } = useForm(["username", "password"]);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState({ state: false, message: "" });
 
-  const handleIdInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
-    updateFormData("id", input);
-  };
-
-  const handlePasswordInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
-    updateFormData("password", input);
-  };
-
-  const validateInput = () => {
-    if (formData.id.value === "") return setError({ state: true, message: "* 아이디를 입력해주세요." });
-    if (formData.password.value === "") return setError({ state: true, message: "* 비밀번호를 입력해주세요." });
-    if (error.state) setError({ state: false, message: "" });
+    const name = e.target.name;
+    updateFormData(name, input);
   };
 
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
@@ -35,8 +24,6 @@ export default function LoginForm() {
 
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
-    validateInput();
-    if (error.state) return;
     // request api for login
   };
 
@@ -45,14 +32,15 @@ export default function LoginForm() {
       <form onSubmit={handleLogin} className="w-full flex flex-col gap-4">
         <div>
           <TextField
+            name="username"
             label="아이디"
-            value={formData.id.value}
-            onChange={handleIdInput}
+            value={formData.username.value}
+            onChange={handleInput}
             fullWidth
             InputProps={{
               endAdornment:
-                formData.id.value !== "" ? (
-                  <IconButton onClick={() => clearInput("id")}>
+                formData.username.value !== "" ? (
+                  <IconButton onClick={() => clearInput("username")}>
                     <Cancel />
                   </IconButton>
                 ) : null,
@@ -61,10 +49,11 @@ export default function LoginForm() {
         </div>
         <div>
           <TextField
+            name="password"
             label="비밀번호"
             value={formData.password.value}
             type={showPassword ? "text" : "password"}
-            onChange={handlePasswordInput}
+            onChange={handleInput}
             fullWidth
             InputProps={{
               endAdornment: (
@@ -85,7 +74,6 @@ export default function LoginForm() {
         <div className="text-right">
           <Link href="">아이디 찾기</Link> | <Link href="">비밀번호 찾기</Link>
         </div>
-        {error.state && <FormHelperText error>{error.message}</FormHelperText>}
         <Button type="submit" variant="contained" size="large" className="mt-6" disableElevation>
           로그인
         </Button>
