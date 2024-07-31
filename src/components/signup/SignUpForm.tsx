@@ -1,6 +1,7 @@
 "use client";
 
-import { type ChangeEvent, type FocusEventHandler, type FormEvent, useCallback, useState } from "react";
+import { type ChangeEvent, type FocusEventHandler, type FormEvent, useCallback, useContext, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Button,
   Checkbox,
@@ -42,6 +43,7 @@ export default function SignUpForm() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [pendingEmail, setPendingEmail] = useState(false);
   const [pendingCode, setPendingCode] = useState(false);
+  const router = useRouter();
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -168,7 +170,7 @@ export default function SignUpForm() {
     };
     const res = await signup(signupData);
     if (res.isValid) {
-      alert("회원가입 되었습니다.");
+      router.push("/welcome");
       return;
     }
     if (res.errors) {

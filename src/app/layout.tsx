@@ -18,14 +18,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthContextProvider>
-      <html lang="en">
-        <body className={inter.className}>
+    <html lang="en">
+      <body className={inter.className}>
+        <AuthContextProvider>
           <NavBar />
           <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
-          <Footer />
-        </body>
-      </html>
-    </AuthContextProvider>
+        </AuthContextProvider>
+        <Footer />
+      </body>
+    </html>
   );
 }

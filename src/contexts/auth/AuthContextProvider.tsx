@@ -2,14 +2,19 @@
 
 import { type ReactNode, useState, createContext } from "react";
 
-type AuthContextProps = { session: SessionUser | null; updateSession: (sessionData: SessionUser) => void } | null;
+export type AuthContextProps = AuthContextState | null;
+
+export type AuthContextState = {
+  session: SessionUser | null;
+  updateSession: (sessionData: SessionUser) => void;
+};
 
 export type SessionUser = {
   username: string;
   token: string;
 };
 
-const AuthContext = createContext<AuthContextProps>(null);
+export const AuthContext = createContext<AuthContextProps>(null);
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<SessionUser | null>(null);
