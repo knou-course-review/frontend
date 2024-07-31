@@ -15,6 +15,10 @@ export const SignupFormSchema = z
         .trim(),
       isValid: z.boolean().refine((val) => val === true, { message: "* 이메일이 인증되지 않았습니다." }),
     }),
+    confirmationCode: z.object({
+      code: z.string().min(1, { message: "* 인증번호를 입력해 주세요." }).trim(),
+      isValid: z.boolean().refine((val) => val === true, { message: "* 인증번호를 확인해 주세요." }),
+    }),
     password: z
       .string()
       .min(1, { message: "* 비밀번호를 입력해 주세요." })

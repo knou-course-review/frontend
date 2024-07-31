@@ -26,4 +26,18 @@ export const api = {
     }
     throw new Error(`${res.status} error: ${res.statusText}`);
   },
+  put: async (path: string, data: unknown) => {
+    const res = await fetch(`${process.env.BACKEND_URL}${path}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    console.log(res);
+    if (res.ok) {
+      return res;
+    }
+    throw new Error(`${res.status} error: ${res.statusText}`);
+  },
 };

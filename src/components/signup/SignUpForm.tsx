@@ -1,6 +1,6 @@
 "use client";
 
-import useForm from "@/hooks/useForm";
+import { type ChangeEvent, type FocusEventHandler, type FormEvent, useCallback, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -12,25 +12,50 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import { ChangeEvent, FocusEventHandler, FormEvent, useState } from "react";
-import { NUMBER_REGEX } from "@/utils/regex";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Timer from "./Timer";
+import useForm from "@/hooks/useForm";
+import { checkCode, checkEmail, checkUsername, sendCode, signup } from "@/actions/signup";
+import { NUMBER_REGEX } from "@/utils/regex";
+
+type FormErrorMessages = {
+  [key: string]: string[];
+};
 
 export default function SignUpForm() {
-  const { formData, updateFormData } = useForm(["id", "email", "password", "passwordConfirm", "confirmationCode"]);
+  const { formData, updateFormData } = useForm([
+    "username",
+    "email",
+    "password",
+    "passwordConfirm",
+    "confirmationCode",
+  ]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmationPassword, setShowConfirmationPassword] = useState(false);
   const [isChecked, setIsChecked] = useState({ tos: false, pp: false });
-  const [isFormError, setIsFormError] = useState(false);
+  const [formError, setFormError] = useState<FormErrorMessages>({});
+  const [isValidUsername, setIsValidUsername] = useState(false);
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [isValidCode, setIsValidCode] = useState(false);
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState(false);
+  const [pendingCode, setPendingCode] = useState(false);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     const name = e.target.name;
 
-    if (name === "id" && input.length > 20) return;
-    if ((name === "confirmationCode" && !NUMBER_REGEX.test(input)) || input.length > 6) return;
-
+    if (name === "username" && isValidUsername) {
+      setIsValidUsername(false);
+    }
+    if (
+      (name === "confirmationCode" && !NUMBER_REGEX.test(input)) ||
+      (name === "confirmationCode" && input.length > 6)
+    ) {
+      return;
+    }
     updateFormData(name, input);
   };
 
@@ -38,6 +63,8 @@ export default function SignUpForm() {
     const input = e.target.value;
     if (input.length > 0 && input.length < 8) {
       updateFormData("password", input, true, "* 비밀번호는 8자리 이상이어야 합니다.");
+    } else {
+      setFormError((prev) => ({ ...prev, password: [] }));
     }
     if (formData.passwordConfirm.value && formData.password.value !== formData.passwordConfirm.value) {
       updateFormData("passwordConfirm", formData.passwordConfirm.value, true, "* 비밀번호가 일치하지 않습니다.");
@@ -49,6 +76,9 @@ export default function SignUpForm() {
     const error = input !== formData.password.value;
     const errorMsg = input !== formData.password.value ? "* 비밀번호가 일치하지 않습니다." : "";
     updateFormData("passwordConfirm", input, error, errorMsg);
+    if (!error) {
+      setFormError((prev) => ({ ...prev, passwordConfirm: [] }));
+    }
   };
 
   const handleCheckbox = (e: ChangeEvent<HTMLInputElement>, ...keys: string[]) => {
@@ -63,82 +93,130 @@ export default function SignUpForm() {
 
   const handleConfirmationPasswordVisibility = () => setShowConfirmationPassword(!showConfirmationPassword);
 
-  const validateUsername = () => {
-    if (formData.id.value === "") updateFormData("id", "", true, "* 아이디를 입력해주세요.");
-    console.log("Requesting to server");
-  };
-
-  const validateEmail = () => {
-    if (formData.email.value === "") updateFormData("email", "", true, "* 이메일을 입력해주세요.");
-    console.log("Requesting to server");
-  };
-
-  const validateConfirmationCode = () => {
-    if (formData.confirmationCode.value === "")
-      updateFormData("confirmationCode", "", true, "* 인증번호를 입력해주세요.");
-    console.log("Requesting to server");
-  };
-
-  const validateFields = () => {
-    let isValid = true;
-    if (formData.id.value === "") {
-      updateFormData("id", "", true, "* 아이디를 입력해주세요.");
-      isValid = false;
+  const validateUsername = async () => {
+    if (formData.username.value === "") return updateFormData("username", "", true, "* 아이디를 입력해주세요.");
+    const result = await checkUsername(formData.username.value as string);
+    if (result?.isValid) {
+      setIsValidUsername(true);
+      setFormError((prev) => ({ ...prev, username: [] }));
     }
-    if (formData.email.value === "") {
-      updateFormData("email", "", true, "* 이메일이 인증되지 않았습니다.");
-      isValid = false;
-    }
-    if (formData.password.value === "") {
-      updateFormData("password", "", true, "* 비밀번호를 입력해주세요.");
-      isValid = false;
-    }
-    if (formData.passwordConfirm.value === "") {
-      updateFormData("passwordConfirm", "", true, "* 비밀번호를 확인해주세요.");
-      isValid = false;
-    }
-    return isValid;
   };
 
-  const validateAgreements = () => {
-    const isValid = isChecked.tos && isChecked.pp;
-    setIsFormError(!isValid);
-    return isValid;
+  const validateEmail = async () => {
+    if (formData.email.value === "") return updateFormData("email", "", true, "* 이메일을 입력해주세요.");
+    if (!(formData.email.value as string).endsWith("@knou.ac.kr"))
+      return updateFormData("email", formData.email.value, true, "* @knou.ac.kr 도메인의 이메일을 입력해 주세요.");
+    if (!isValidCode) {
+      setPendingEmail(true);
+      const result = await checkEmail(formData.email.value as string);
+      if (result?.isValid) {
+        setIsValidEmail(true);
+        const result = await sendCode(formData.email.value as string);
+        if (result?.isValid) {
+          setPendingEmail(false);
+          setIsTimerActive(true);
+          setIsTimerRunning(true);
+          setFormError((prev) => ({ ...prev, email: [] }));
+        }
+      }
+    }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const validateConfirmationCode = async () => {
+    if (formData.confirmationCode.value === "") {
+      return updateFormData("confirmationCode", "", true, "* 인증번호를 입력해주세요.");
+    }
+    const confirmationBody = {
+      email: formData.email.value as string,
+      code: formData.confirmationCode.value as string,
+    };
+    setPendingCode(true);
+    const result = await checkCode(confirmationBody);
+    if (result.isValid) {
+      setIsValidCode(true);
+      setIsValidEmail(true);
+      setIsTimerRunning(false);
+      updateFormData("confirmationCode", formData.confirmationCode.value);
+    }
+    if (!result.isValid) {
+      updateFormData("confirmationCode", formData.confirmationCode.value, true, "* 잘못된 인증번호입니다.");
+    }
+    setPendingCode(false);
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isValidForm = validateFields();
-    const isValidAgreements = validateAgreements();
-    if (!isValidForm || !isValidAgreements) return;
-    alert("submitted");
+    const signupData = {
+      username: {
+        name: formData.username.value as string,
+        isValid: isValidUsername,
+      },
+      email: {
+        email: formData.email.value as string,
+        isValid: isValidEmail,
+      },
+      confirmationCode: {
+        code: formData.confirmationCode.value as string,
+        isValid: isValidCode,
+      },
+      password: formData.password.value as string,
+      passwordConfirm: formData.passwordConfirm.value as string,
+      agreements: {
+        tos: isChecked.tos,
+        pp: isChecked.pp,
+      },
+    };
+    const res = await signup(signupData);
+    if (res.isValid) {
+      alert("회원가입 되었습니다.");
+      return;
+    }
+    if (res.errors) {
+      setFormError(res.errors);
+      console.log(res.errors);
+    }
   };
+
+  const endTimer = useCallback(() => {
+    setIsTimerRunning(false);
+  }, []);
 
   return (
     <div className="flex w-100">
       <form onSubmit={handleSubmit} className="w-full flex flex-col gap-8">
         <div>
           <FormControl variant="outlined" fullWidth>
-            <InputLabel error={formData.id.error}>아이디</InputLabel>
+            <InputLabel error={formData.username.error}>아이디</InputLabel>
             <OutlinedInput
-              name="id"
+              name="username"
               label="아이디"
-              value={formData.id.value}
-              error={formData.id.error}
+              value={formData.username.value}
+              error={formData.username.error}
               onChange={handleInput}
               endAdornment={
                 <InputAdornment position="end">
-                  <Button variant="contained" size="small" onClick={validateUsername} disableElevation>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={validateUsername}
+                    disabled={isValidUsername}
+                    disableElevation
+                  >
                     중복확인
                   </Button>
                 </InputAdornment>
               }
             />
-            {formData.id.error && <FormHelperText error>{formData.id.errorMsg}</FormHelperText>}
+            {isValidUsername && <FormHelperText>* 사용 가능한 아이디입니다.</FormHelperText>}
+            {formData.username.error ? (
+              <FormHelperText error>{formData.username.errorMsg}</FormHelperText>
+            ) : formError.username ? (
+              <FormHelperText error>{formError.username[0]}</FormHelperText>
+            ) : null}
           </FormControl>
         </div>
         <div>
-          <FormControl variant="outlined" fullWidth>
+          <FormControl variant="outlined" disabled={isValidCode} fullWidth>
             <InputLabel error={formData.email.error}>이메일</InputLabel>
             <OutlinedInput
               name="email"
@@ -148,38 +226,59 @@ export default function SignUpForm() {
               onChange={handleInput}
               endAdornment={
                 <InputAdornment position="end">
-                  <Button variant="contained" size="small" onClick={validateEmail} disableElevation>
-                    이메일 인증
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={validateEmail}
+                    disabled={isValidCode || isTimerRunning || pendingEmail}
+                    disableElevation
+                  >
+                    {pendingEmail ? "확인중..." : "이메일 인증"}
                   </Button>
                 </InputAdornment>
               }
             />
-            {formData.email.error && <FormHelperText error>{formData.email.errorMsg}</FormHelperText>}
+            {formData.email.error ? (
+              <FormHelperText error>{formData.email.errorMsg}</FormHelperText>
+            ) : formError.email ? (
+              <FormHelperText error>{formError.email[0]}</FormHelperText>
+            ) : null}
           </FormControl>
         </div>
-        <div>
-          <FormControl variant="outlined" fullWidth>
-            <InputLabel error={formData.confirmationCode.error}>인증번호</InputLabel>
-            <OutlinedInput
-              name="confirmationCode"
-              label="인증번호"
-              value={formData.confirmationCode.value}
-              error={formData.confirmationCode.error}
-              onChange={handleInput}
-              endAdornment={
-                <InputAdornment position="end" className="flex gap-3">
-                  03:15
-                  <Button variant="contained" size="small" onClick={validateConfirmationCode} disableElevation>
-                    인증하기
-                  </Button>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          {formData.confirmationCode.error && (
-            <FormHelperText error>{formData.confirmationCode.errorMsg}</FormHelperText>
-          )}
-        </div>
+        {isTimerActive && (
+          <div>
+            <FormControl variant="outlined" disabled={isValidCode} fullWidth>
+              <InputLabel error={formData.confirmationCode.error}>인증번호</InputLabel>
+              <OutlinedInput
+                name="confirmationCode"
+                label="인증번호"
+                value={formData.confirmationCode.value}
+                error={formData.confirmationCode.error}
+                onChange={handleInput}
+                endAdornment={
+                  <InputAdornment position="end" className="flex gap-3">
+                    {isTimerRunning && <Timer endTimer={endTimer} />}
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={validateConfirmationCode}
+                      disabled={isValidCode || pendingCode}
+                      disableElevation
+                    >
+                      {pendingCode ? "확인중..." : "인증하기"}
+                    </Button>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            {isValidCode && <FormHelperText>* 이메일이 인증되었습니다.</FormHelperText>}
+            {formData.confirmationCode.error ? (
+              <FormHelperText error>{formData.confirmationCode.errorMsg}</FormHelperText>
+            ) : formError.confirmationCode ? (
+              <FormHelperText error>{formError.confirmationCode[0]}</FormHelperText>
+            ) : null}
+          </div>
+        )}
         <div>
           <FormControl variant="outlined" fullWidth>
             <InputLabel error={formData.password.error}>비밀번호</InputLabel>
@@ -197,7 +296,11 @@ export default function SignUpForm() {
                 </IconButton>
               }
             />
-            {formData.password.error && <FormHelperText error>{formData.password.errorMsg}</FormHelperText>}
+            {formData.password.error ? (
+              <FormHelperText error>{formData.password.errorMsg}</FormHelperText>
+            ) : formError.password ? (
+              <FormHelperText error>{formError.password[0]}</FormHelperText>
+            ) : null}
           </FormControl>
         </div>
         <div>
@@ -217,9 +320,11 @@ export default function SignUpForm() {
                 </IconButton>
               }
             />
-            {formData.passwordConfirm.error && (
+            {formData.passwordConfirm.error ? (
               <FormHelperText error>{formData.passwordConfirm.errorMsg}</FormHelperText>
-            )}
+            ) : formError.passwordConfirm ? (
+              <FormHelperText error>{formError.passwordConfirm[0]}</FormHelperText>
+            ) : null}
           </FormControl>
         </div>
         <div>
@@ -231,13 +336,13 @@ export default function SignUpForm() {
           />
           <FormControlLabel
             label="서비스 이용약관에 동의합니다. (필수)"
-            control={<Checkbox checked={isChecked.tos} onChange={(e) => handleCheckbox(e, "tos")} />}
+            control={<Checkbox name="tos" checked={isChecked.tos} onChange={(e) => handleCheckbox(e, "tos")} />}
           />
           <FormControlLabel
             label="개인정보 처리방침에 동의합니다. (필수)"
-            control={<Checkbox checked={isChecked.pp} onChange={(e) => handleCheckbox(e, "pp")} />}
+            control={<Checkbox name="pp" checked={isChecked.pp} onChange={(e) => handleCheckbox(e, "pp")} />}
           />
-          {isFormError && <FormHelperText error>* 필수 약관에 동의해주세요.</FormHelperText>}
+          {formError.agreements && <FormHelperText error>{formError.agreements[0]}</FormHelperText>}
         </div>
         <Button type="submit" variant="contained" size="large" disableElevation>
           가입하기
