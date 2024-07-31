@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import { AuthContextProvider } from "@/contexts/auth/AuthContextProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,12 +18,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <NavBar />
-        <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
-        <Footer />
-      </body>
-    </html>
+    <AuthContextProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <NavBar />
+          <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
+          <Footer />
+        </body>
+      </html>
+    </AuthContextProvider>
   );
 }
