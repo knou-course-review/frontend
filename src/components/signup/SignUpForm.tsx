@@ -39,6 +39,7 @@ export default function SignUpForm() {
   const [isValidUsername, setIsValidUsername] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidCode, setIsValidCode] = useState(false);
+  const [isExpiredCode, setIsExpiredCode] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [pendingEmail, setPendingEmail] = useState(false);
@@ -101,6 +102,8 @@ export default function SignUpForm() {
     if (result?.isValid) {
       setIsValidUsername(true);
       setFormError((prev) => ({ ...prev, username: [] }));
+    } else {
+      updateFormData("username", formData.username.value, true, "* 이미 가입된 아이디입니다.");
     }
   };
 
@@ -120,13 +123,16 @@ export default function SignUpForm() {
           setIsTimerRunning(true);
           setFormError((prev) => ({ ...prev, email: [] }));
         }
+      } else {
+        updateFormData("email", formData.email.value, true, "* 이미 가입된 이메일입니다.");
+        setPendingEmail(false);
       }
     }
   };
 
   const validateConfirmationCode = async () => {
     if (formData.confirmationCode.value === "") {
-      return updateFormData("confirmationCode", "", true, "* 인증번호를 입력해주세요.");
+      return updateFormData("confirmationCode", "", true, "* 인증번호를 입력해 주세요.");
     }
     const confirmationBody = {
       email: formData.email.value as string,
@@ -138,7 +144,8 @@ export default function SignUpForm() {
       setIsValidCode(true);
       setIsValidEmail(true);
       setIsTimerRunning(false);
-      updateFormData("confirmationCode", formData.confirmationCode.value);
+      updateFormData("confirmationCode", formData.confirmationCode.value, false);
+      setFormError((prev) => ({ ...prev, confirmationCode: [] }));
     }
     if (!result.isValid) {
       updateFormData("confirmationCode", formData.confirmationCode.value, true, "* 잘못된 인증번호입니다.");
@@ -181,6 +188,13 @@ export default function SignUpForm() {
 
   const endTimer = useCallback(() => {
     setIsTimerRunning(false);
+    setIsExpiredCode(true);
+    updateFormData(
+      "confirmationCode",
+      formData.confirmationCode.value,
+      true,
+      "* 인증번호가 만료되었습니다. 이메일 인증을 다시 진행해 주세요."
+    );
   }, []);
 
   return (
@@ -264,7 +278,7 @@ export default function SignUpForm() {
                       variant="contained"
                       size="small"
                       onClick={validateConfirmationCode}
-                      disabled={isValidCode || pendingCode}
+                      disabled={isValidCode || pendingCode || isExpiredCode}
                       disableElevation
                     >
                       {pendingCode ? "확인중..." : "인증하기"}
@@ -272,13 +286,13 @@ export default function SignUpForm() {
                   </InputAdornment>
                 }
               />
+              {isValidCode && <FormHelperText>* 이메일이 인증되었습니다.</FormHelperText>}
+              {formData.confirmationCode.error ? (
+                <FormHelperText error>{formData.confirmationCode.errorMsg}</FormHelperText>
+              ) : formError.confirmationCode ? (
+                <FormHelperText error>{formError.confirmationCode[0]}</FormHelperText>
+              ) : null}
             </FormControl>
-            {isValidCode && <FormHelperText>* 이메일이 인증되었습니다.</FormHelperText>}
-            {formData.confirmationCode.error ? (
-              <FormHelperText error>{formData.confirmationCode.errorMsg}</FormHelperText>
-            ) : formError.confirmationCode ? (
-              <FormHelperText error>{formError.confirmationCode[0]}</FormHelperText>
-            ) : null}
           </div>
         )}
         <div>

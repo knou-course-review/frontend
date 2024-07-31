@@ -25,7 +25,6 @@ export async function checkUsername(username: string) {
 export async function checkEmail(email: string) {
   try {
     const res = await api.post("/api/v1/users/duplicate-email", { email });
-    console.log(res);
     if (res.ok) {
       return { isValid: true };
     }
@@ -33,7 +32,7 @@ export async function checkEmail(email: string) {
     const isError = ErrorSchema.safeParse(e);
     if (isError.success) {
       console.log((e as Error).message);
-    } else console.log(e);
+    }
     return { isValid: false };
   }
 }
@@ -88,7 +87,7 @@ export async function signup(formData: any) {
       console.log(res);
       if (res.ok) {
         const body = await res.json();
-        console.log(body)
+        console.log(body);
         return { isValid: true };
       }
     } catch (e) {
