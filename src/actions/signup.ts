@@ -4,8 +4,6 @@ import { ErrorSchema } from "@/schema/error";
 import { SignupFormSchema } from "@/schema/signup";
 import { api } from "@/utils/api";
 
-let serverCode: number;
-
 export async function checkUsername(username: string) {
   try {
     const res = await api.post("/api/v1/users/duplicate-username", { username });
@@ -44,7 +42,6 @@ export async function sendCode(email: string) {
     if (res.ok) {
       const body = await res.json();
       console.log(body);
-      serverCode = body.data.code;
       return { isValid: true };
     }
   } catch (e) {

@@ -118,6 +118,7 @@ export default function SignUpForm() {
         setIsValidEmail(true);
         const result = await sendCode(formData.email.value as string);
         if (result?.isValid) {
+          setIsExpiredCode(false);
           setPendingEmail(false);
           setIsTimerActive(true);
           setIsTimerRunning(true);
