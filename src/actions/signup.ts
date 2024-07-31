@@ -57,20 +57,39 @@ export async function sendCode(email: string) {
   }
 }
 
-export async function checkCode(code: string) {
-  const userCode = Number(code);
-  const isValid = serverCode === userCode;
-  return { isValid };
+export async function checkCode(body: { email: string; code: string }) {
+  try {
+    const res = await api.put("/api/v1/mail", body);
+    console.log(res);
+    if (res.ok) {
+      const body = await res.json();
+      console.log(body);
+      return { isValid: body.data.confirm };
+    }
+  } catch (e) {
+    const isError = ErrorSchema.safeParse(e);
+    if (isError.success) {
+      console.log((e as Error).message);
+    } else console.log(e);
+  }
+  return { isValid: false };
 }
 
 export async function signup(formData: any) {
   const validatedForm = SignupFormSchema.safeParse(formData);
   if (validatedForm.success) {
     try {
-      const res = await api.post("/api/v1/users/sign-up", formData);
+      const signupData = {
+        username: formData.username.name,
+        email: formData.email.email,
+        password: formData.password,
+      };
+      const res = await api.post("/api/v1/users/sign-up", signupData);
       console.log(res);
       if (res.ok) {
-        return { isValid: true, response: res };
+        const body = await res.json();
+        console.log(body)
+        return { isValid: true };
       }
     } catch (e) {
       const isError = ErrorSchema.safeParse(e);
