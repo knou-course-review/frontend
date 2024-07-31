@@ -35,12 +35,12 @@ export default function LoginForm() {
       password: formData.password.value as string,
     };
     const res = await login(loginCredentials);
-    if (res.isValid) {
+    if (res?.isValid) {
       // save session
       return router.push("/");
-    } else if (res.errors) {
-      updateFormData("username", formData.username.value, true, res.errors.username && res.errors.username[0]);
-      updateFormData("password", formData.password.value, true, res.errors.password && res.errors.password[0]);
+    } else if (res?.errors) {
+      updateFormData("username", formData.username.value, true, res?.errors.username && res?.errors.username[0]);
+      updateFormData("password", formData.password.value, true, res?.errors.password && res?.errors.password[0]);
       setPending(false);
       return;
     }
