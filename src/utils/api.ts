@@ -1,6 +1,6 @@
 export const api = {
   get: async (path: string) => {
-    const res = await fetch(`${process.env.BACKEND_URL}${path}`, {
+    const res = await fetch(`${process.env.SERVER_URL}${path}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -13,7 +13,7 @@ export const api = {
     throw new Error(`${res.status} error: ${res.statusText}`);
   },
   post: async (path: string, data: unknown) => {
-    const res = await fetch(`${process.env.BACKEND_URL}${path}`, {
+    const res = await fetch(`${process.env.SERVER_URL}${path}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +27,7 @@ export const api = {
     throw new Error(`${res.status} error: ${res.statusText}`);
   },
   put: async (path: string, data: unknown) => {
-    const res = await fetch(`${process.env.BACKEND_URL}${path}`, {
+    const res = await fetch(`${process.env.SERVER_URL}${path}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
