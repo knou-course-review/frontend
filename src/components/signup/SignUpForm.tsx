@@ -16,6 +16,7 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Timer from "./Timer";
+import WelcomeMessage from "./WelcomeMessage";
 import useForm from "@/hooks/useForm";
 import { checkCode, checkEmail, checkUsername, sendCode, signup } from "@/actions/signup";
 import { NUMBER_REGEX } from "@/utils/regex";
@@ -44,6 +45,7 @@ export default function SignUpForm() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [pendingEmail, setPendingEmail] = useState(false);
   const [pendingCode, setPendingCode] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   const router = useRouter();
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -178,8 +180,7 @@ export default function SignUpForm() {
     };
     const res = await signup(signupData);
     if (res.isValid) {
-      router.push("/welcome");
-      return;
+      return setIsRegistered(true);
     }
     if (res.errors) {
       setFormError(res.errors);
@@ -198,173 +199,177 @@ export default function SignUpForm() {
     );
   }, []);
 
+  if (isRegistered) return <WelcomeMessage />;
   return (
-    <div className="flex w-100">
-      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-8">
-        <div>
-          <FormControl variant="outlined" fullWidth>
-            <InputLabel error={formData.username.error}>아이디</InputLabel>
-            <OutlinedInput
-              name="username"
-              label="아이디"
-              value={formData.username.value}
-              error={formData.username.error}
-              onChange={handleInput}
-              endAdornment={
-                <InputAdornment position="end">
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={validateUsername}
-                    disabled={isValidUsername}
-                    disableElevation
-                  >
-                    중복확인
-                  </Button>
-                </InputAdornment>
-              }
-            />
-            {isValidUsername && <FormHelperText>* 사용 가능한 아이디입니다.</FormHelperText>}
-            {formData.username.error ? (
-              <FormHelperText error>{formData.username.errorMsg}</FormHelperText>
-            ) : formError.username ? (
-              <FormHelperText error>{formError.username[0]}</FormHelperText>
-            ) : null}
-          </FormControl>
-        </div>
-        <div>
-          <FormControl variant="outlined" disabled={isValidCode} fullWidth>
-            <InputLabel error={formData.email.error}>이메일</InputLabel>
-            <OutlinedInput
-              name="email"
-              label="이메일"
-              value={formData.email.value}
-              error={formData.email.error}
-              onChange={handleInput}
-              endAdornment={
-                <InputAdornment position="end">
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={validateEmail}
-                    disabled={isValidCode || isTimerRunning || pendingEmail}
-                    disableElevation
-                  >
-                    {pendingEmail ? "확인중..." : "이메일 인증"}
-                  </Button>
-                </InputAdornment>
-              }
-            />
-            {formData.email.error ? (
-              <FormHelperText error>{formData.email.errorMsg}</FormHelperText>
-            ) : formError.email ? (
-              <FormHelperText error>{formError.email[0]}</FormHelperText>
-            ) : null}
-          </FormControl>
-        </div>
-        {isTimerActive && (
+    <>
+      <h1 className="font-bold text-2xl mb-8 text-center">회원가입</h1>
+      <div className="flex w-100">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-8">
           <div>
-            <FormControl variant="outlined" disabled={isValidCode} fullWidth>
-              <InputLabel error={formData.confirmationCode.error}>인증번호</InputLabel>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel error={formData.username.error}>아이디</InputLabel>
               <OutlinedInput
-                name="confirmationCode"
-                label="인증번호"
-                value={formData.confirmationCode.value}
-                error={formData.confirmationCode.error}
+                name="username"
+                label="아이디"
+                value={formData.username.value}
+                error={formData.username.error}
                 onChange={handleInput}
                 endAdornment={
-                  <InputAdornment position="end" className="flex gap-3">
-                    {isTimerRunning && <Timer endTimer={endTimer} />}
+                  <InputAdornment position="end">
                     <Button
                       variant="contained"
                       size="small"
-                      onClick={validateConfirmationCode}
-                      disabled={isValidCode || pendingCode || isExpiredCode}
+                      onClick={validateUsername}
+                      disabled={isValidUsername}
                       disableElevation
                     >
-                      {pendingCode ? "확인중..." : "인증하기"}
+                      중복확인
                     </Button>
                   </InputAdornment>
                 }
               />
-              {isValidCode && <FormHelperText>* 이메일이 인증되었습니다.</FormHelperText>}
-              {formData.confirmationCode.error ? (
-                <FormHelperText error>{formData.confirmationCode.errorMsg}</FormHelperText>
-              ) : formError.confirmationCode ? (
-                <FormHelperText error>{formError.confirmationCode[0]}</FormHelperText>
+              {isValidUsername && <FormHelperText>* 사용 가능한 아이디입니다.</FormHelperText>}
+              {formData.username.error ? (
+                <FormHelperText error>{formData.username.errorMsg}</FormHelperText>
+              ) : formError.username ? (
+                <FormHelperText error>{formError.username[0]}</FormHelperText>
               ) : null}
             </FormControl>
           </div>
-        )}
-        <div>
-          <FormControl variant="outlined" fullWidth>
-            <InputLabel error={formData.password.error}>비밀번호</InputLabel>
-            <OutlinedInput
-              name="password"
-              label="비밀번호"
-              type={showPassword ? "text" : "password"}
-              value={formData.password.value}
-              error={formData.password.error}
-              onChange={handleInput}
-              onBlur={validatePassword}
-              endAdornment={
-                <IconButton onClick={handlePasswordVisibility}>
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
+          <div>
+            <FormControl variant="outlined" disabled={isValidCode} fullWidth>
+              <InputLabel error={formData.email.error}>이메일</InputLabel>
+              <OutlinedInput
+                name="email"
+                label="이메일"
+                value={formData.email.value}
+                error={formData.email.error}
+                onChange={handleInput}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={validateEmail}
+                      disabled={isValidCode || isTimerRunning || pendingEmail}
+                      disableElevation
+                    >
+                      {pendingEmail ? "확인중..." : "이메일 인증"}
+                    </Button>
+                  </InputAdornment>
+                }
+              />
+              {formData.email.error ? (
+                <FormHelperText error>{formData.email.errorMsg}</FormHelperText>
+              ) : formError.email ? (
+                <FormHelperText error>{formError.email[0]}</FormHelperText>
+              ) : null}
+            </FormControl>
+          </div>
+          {isTimerActive && (
+            <div>
+              <FormControl variant="outlined" disabled={isValidCode} fullWidth>
+                <InputLabel error={formData.confirmationCode.error}>인증번호</InputLabel>
+                <OutlinedInput
+                  name="confirmationCode"
+                  label="인증번호"
+                  value={formData.confirmationCode.value}
+                  error={formData.confirmationCode.error}
+                  onChange={handleInput}
+                  endAdornment={
+                    <InputAdornment position="end" className="flex gap-3">
+                      {isTimerRunning && <Timer endTimer={endTimer} />}
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={validateConfirmationCode}
+                        disabled={isValidCode || pendingCode || isExpiredCode}
+                        disableElevation
+                      >
+                        {pendingCode ? "확인중..." : "인증하기"}
+                      </Button>
+                    </InputAdornment>
+                  }
+                />
+                {isValidCode && <FormHelperText>* 이메일이 인증되었습니다.</FormHelperText>}
+                {formData.confirmationCode.error ? (
+                  <FormHelperText error>{formData.confirmationCode.errorMsg}</FormHelperText>
+                ) : formError.confirmationCode ? (
+                  <FormHelperText error>{formError.confirmationCode[0]}</FormHelperText>
+                ) : null}
+              </FormControl>
+            </div>
+          )}
+          <div>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel error={formData.password.error}>비밀번호</InputLabel>
+              <OutlinedInput
+                name="password"
+                label="비밀번호"
+                type={showPassword ? "text" : "password"}
+                value={formData.password.value}
+                error={formData.password.error}
+                onChange={handleInput}
+                onBlur={validatePassword}
+                endAdornment={
+                  <IconButton onClick={handlePasswordVisibility}>
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                }
+              />
+              {formData.password.error ? (
+                <FormHelperText error>{formData.password.errorMsg}</FormHelperText>
+              ) : formError.password ? (
+                <FormHelperText error>{formError.password[0]}</FormHelperText>
+              ) : null}
+            </FormControl>
+          </div>
+          <div>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel error={formData.passwordConfirm.error}>비밀번호 확인</InputLabel>
+              <OutlinedInput
+                name="passwordConfirm"
+                label="비밀번호 확인"
+                type={showConfirmationPassword ? "text" : "password"}
+                value={formData.passwordConfirm.value}
+                error={formData.passwordConfirm.error}
+                onChange={handleInput}
+                onBlur={validatePasswordConfirm}
+                endAdornment={
+                  <IconButton onClick={handleConfirmationPasswordVisibility}>
+                    {showConfirmationPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                }
+              />
+              {formData.passwordConfirm.error ? (
+                <FormHelperText error>{formData.passwordConfirm.errorMsg}</FormHelperText>
+              ) : formError.passwordConfirm ? (
+                <FormHelperText error>{formError.passwordConfirm[0]}</FormHelperText>
+              ) : null}
+            </FormControl>
+          </div>
+          <div>
+            <FormControlLabel
+              label="모두 동의합니다."
+              control={
+                <Checkbox checked={isChecked.tos && isChecked.pp} onChange={(e) => handleCheckbox(e, "tos", "pp")} />
               }
             />
-            {formData.password.error ? (
-              <FormHelperText error>{formData.password.errorMsg}</FormHelperText>
-            ) : formError.password ? (
-              <FormHelperText error>{formError.password[0]}</FormHelperText>
-            ) : null}
-          </FormControl>
-        </div>
-        <div>
-          <FormControl variant="outlined" fullWidth>
-            <InputLabel error={formData.passwordConfirm.error}>비밀번호 확인</InputLabel>
-            <OutlinedInput
-              name="passwordConfirm"
-              label="비밀번호 확인"
-              type={showConfirmationPassword ? "text" : "password"}
-              value={formData.passwordConfirm.value}
-              error={formData.passwordConfirm.error}
-              onChange={handleInput}
-              onBlur={validatePasswordConfirm}
-              endAdornment={
-                <IconButton onClick={handleConfirmationPasswordVisibility}>
-                  {showConfirmationPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              }
+            <FormControlLabel
+              label="서비스 이용약관에 동의합니다. (필수)"
+              control={<Checkbox name="tos" checked={isChecked.tos} onChange={(e) => handleCheckbox(e, "tos")} />}
             />
-            {formData.passwordConfirm.error ? (
-              <FormHelperText error>{formData.passwordConfirm.errorMsg}</FormHelperText>
-            ) : formError.passwordConfirm ? (
-              <FormHelperText error>{formError.passwordConfirm[0]}</FormHelperText>
-            ) : null}
-          </FormControl>
-        </div>
-        <div>
-          <FormControlLabel
-            label="모두 동의합니다."
-            control={
-              <Checkbox checked={isChecked.tos && isChecked.pp} onChange={(e) => handleCheckbox(e, "tos", "pp")} />
-            }
-          />
-          <FormControlLabel
-            label="서비스 이용약관에 동의합니다. (필수)"
-            control={<Checkbox name="tos" checked={isChecked.tos} onChange={(e) => handleCheckbox(e, "tos")} />}
-          />
-          <FormControlLabel
-            label="개인정보 처리방침에 동의합니다. (필수)"
-            control={<Checkbox name="pp" checked={isChecked.pp} onChange={(e) => handleCheckbox(e, "pp")} />}
-          />
-          {formError.agreements && <FormHelperText error>{formError.agreements[0]}</FormHelperText>}
-        </div>
-        <Button type="submit" variant="contained" size="large" disableElevation>
-          가입하기
-        </Button>
-      </form>
-    </div>
+            <FormControlLabel
+              label="개인정보 처리방침에 동의합니다. (필수)"
+              control={<Checkbox name="pp" checked={isChecked.pp} onChange={(e) => handleCheckbox(e, "pp")} />}
+            />
+            {formError.agreements && <FormHelperText error>{formError.agreements[0]}</FormHelperText>}
+          </div>
+          <Button type="submit" variant="contained" size="large" disableElevation>
+            가입하기
+          </Button>
+        </form>
+      </div>
+    </>
   );
 }
