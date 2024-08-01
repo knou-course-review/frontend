@@ -1,7 +1,6 @@
 "use client";
 
-import { type ChangeEvent, type FocusEventHandler, type FormEvent, useCallback, useContext, useState } from "react";
-import { useRouter } from "next/navigation";
+import { type ChangeEvent, type FocusEventHandler, type FormEvent, useCallback, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -46,7 +45,6 @@ export default function SignUpForm() {
   const [pendingEmail, setPendingEmail] = useState(false);
   const [pendingCode, setPendingCode] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
-  const router = useRouter();
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -364,6 +362,7 @@ export default function SignUpForm() {
               control={<Checkbox name="pp" checked={isChecked.pp} onChange={(e) => handleCheckbox(e, "pp")} />}
             />
             {formError.agreements && <FormHelperText error>{formError.agreements[0]}</FormHelperText>}
+            {formError.unknown && <FormHelperText error>{formError.unknown[0]}</FormHelperText>}
           </div>
           <Button type="submit" variant="contained" size="large" disableElevation>
             가입하기
