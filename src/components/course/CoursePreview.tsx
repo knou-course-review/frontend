@@ -2,6 +2,7 @@ import Link from "next/link";
 import Label from "../Label";
 
 type CoursePreviewProps = {
+  id: number;
   courseName: string;
   professor: string;
   department: string;
@@ -11,6 +12,7 @@ type CoursePreviewProps = {
 };
 
 export default function CoursePreview({
+  id,
   courseName,
   professor,
   department,
@@ -19,7 +21,7 @@ export default function CoursePreview({
   semester,
 }: CoursePreviewProps) {
   return (
-    <Link href="/test" className="w-full">
+    <Link href={`/courses/${id}`} className="w-full">
       <div className="p-6 border border-neutral-400 rounded-2xl flex justify-between h-40">
         <div className="flex flex-col justify-between">
           <h1 className="mb-3 text-2xl font-semibold">{courseName}</h1>

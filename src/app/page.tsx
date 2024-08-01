@@ -3,7 +3,7 @@
 import { useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import CoursePreview from "@/components/course/CoursePreview";
+import CourseListContainer from "@/components/course/CourseListContainer";
 import SearchBar from "@/components/search/SearchBar";
 
 export default function Home() {
@@ -19,30 +19,7 @@ export default function Home() {
             <MenuItem value={"평점순"}>평점순 (미정)</MenuItem>
           </Select>
         </div>
-        <CoursePreview
-          courseName="asdf"
-          professor="김교수"
-          classification="교양"
-          department="asdf"
-          year="24학년"
-          semester="1학기"
-        />
-        <CoursePreview
-          courseName="asdf"
-          professor="김교수"
-          classification="교양"
-          department="asdf"
-          year="24학년"
-          semester="1학기"
-        />
-        <CoursePreview
-          courseName="asdf"
-          professor="김교수"
-          classification="교양"
-          department="asdf"
-          year="24학년"
-          semester="1학기"
-        />
+        <CourseListContainer />
       </div>
     </main>
   );
