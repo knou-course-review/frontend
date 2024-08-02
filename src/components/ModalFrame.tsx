@@ -11,7 +11,7 @@ type ModalFrameProps = {
 
 export default function ModalFrame({ closeModal, title, children }: ModalFrameProps) {
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0 grid place-content-center">
+    <div className="fixed top-0 left-0 right-0 bottom-0 grid place-content-center z-50">
       <div className="absolute w-full h-full opacity-50 bg-black z-10" onClick={closeModal} />
       <div className="bg-white z-20 p-10 rounded-4xl relative">
         <div className="absolute right-8 top-8">
