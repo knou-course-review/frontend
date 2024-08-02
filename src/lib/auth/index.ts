@@ -4,8 +4,10 @@ import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 
 type UserJwtPayload = {
-  jti: string;
+  id: number;
+  role: string;
   iat: number;
+  exp: number;
 };
 
 type SessionPayload = {
@@ -81,11 +83,12 @@ export async function saveServerSession(accessToken: string) {
 
 export async function checkSession() {
   const cookie = cookies().get("knous")?.value;
-  console.log(cookie);
-  if (cookie) return { isLoggedIn: true };
-  return { isLoggedIn: false };
+  if (!cookie) return { isLoggedIn: false };
+  return { isLoggedIn: true };
 }
 
 export async function deleteSession() {
-  cookies().delete("knous");
+  const cookie = cookies().get("knous")?.value;
+  if (!cookie) return;
+  cookies().set("knous", "", { expires: new Date(0) });
 }
