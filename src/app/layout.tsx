@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import NavBar from "@/components/NavBar";
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import Footer from "@/components/Footer";
+import NavBar from "@/components/NavBar";
 import { AuthContextProvider } from "@/contexts/auth/AuthContextProvider";
+import ThemeContextProvider from "@/contexts/theme/ThemeContextProvider";
+import type { Metadata } from "next";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +20,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <AuthContextProvider>
-          <NavBar />
-          <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
-        </AuthContextProvider>
-        <Footer />
+        <InitColorSchemeScript defaultMode="system" />
+        <ThemeContextProvider>
+          <AuthContextProvider>
+            <NavBar />
+            <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
+          </AuthContextProvider>
+          <Footer />
+        </ThemeContextProvider>
       </body>
     </html>
   );

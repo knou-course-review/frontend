@@ -11,7 +11,7 @@ export default function NavBar() {
     setSession(null);
   };
   return (
-    <div className="flex border-b border-b-slate-400 bg-white justify-items-center h-24 items-center p-8">
+    <div className="flex border-b border-b-slate-400 dark:border-b-slate-500 justify-items-center h-24 items-center p-8">
       <div>
         <Link href="/">로고</Link>
       </div>

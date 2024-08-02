@@ -11,7 +11,7 @@ export default function ServiceTermsModal({ isShowing, closeModal }: ServiceTerm
   if (!isShowing) return null;
   return (
     <ModalFrame title="서비스 이용약관" closeModal={closeModal}>
-      <div className="w-100 h-52 p-4 overflow-hidden rounded-xl border bg-slate-100 border-slate-300">
+      <div className="w-100 h-52 p-4 overflow-hidden rounded-xl border bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-500">
         <div className="overflow-auto w-full h-full">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis incidunt exercitationem eveniet alias ullam
           sequi similique inventore, non natus quas nisi harum minus, sit ratione, veritatis error eum distinctio ab
