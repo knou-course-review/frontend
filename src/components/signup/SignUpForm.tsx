@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import PrivacyPolicyModal from "../PrivacyPolicyModal";
+import ServiceTermsModal from "../ServiceTermsModal";
 import Timer from "./Timer";
 import WelcomeMessage from "./WelcomeMessage";
 import useForm from "@/hooks/useForm";
@@ -45,6 +47,8 @@ export default function SignUpForm() {
   const [pendingEmail, setPendingEmail] = useState(false);
   const [pendingCode, setPendingCode] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
+  const [isShowingTos, setIsShowingTos] = useState(false);
+  const [isShowingPp, setIsShowingPp] = useState(false);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -353,14 +357,24 @@ export default function SignUpForm() {
                 <Checkbox checked={isChecked.tos && isChecked.pp} onChange={(e) => handleCheckbox(e, "tos", "pp")} />
               }
             />
-            <FormControlLabel
-              label="서비스 이용약관에 동의합니다. (필수)"
-              control={<Checkbox name="tos" checked={isChecked.tos} onChange={(e) => handleCheckbox(e, "tos")} />}
-            />
-            <FormControlLabel
-              label="개인정보 처리방침에 동의합니다. (필수)"
-              control={<Checkbox name="pp" checked={isChecked.pp} onChange={(e) => handleCheckbox(e, "pp")} />}
-            />
+            <div className="flex justify-between">
+              <FormControlLabel
+                label="서비스 이용약관에 동의합니다. (필수)"
+                control={<Checkbox name="tos" checked={isChecked.tos} onChange={(e) => handleCheckbox(e, "tos")} />}
+              />
+              <span className="p-2 underline cursor-pointer" onClick={() => setIsShowingTos(true)}>
+                펼쳐보기
+              </span>
+            </div>
+            <div className="flex justify-between place-items-center">
+              <FormControlLabel
+                label="개인정보 처리방침에 동의합니다. (필수)"
+                control={<Checkbox name="pp" checked={isChecked.pp} onChange={(e) => handleCheckbox(e, "pp")} />}
+              />
+              <span className="p-2 underline cursor-pointer" onClick={() => setIsShowingPp(true)}>
+                펼쳐보기
+              </span>
+            </div>
             {formError.agreements && <FormHelperText error>{formError.agreements[0]}</FormHelperText>}
             {formError.unknown && <FormHelperText error>{formError.unknown[0]}</FormHelperText>}
           </div>
@@ -369,6 +383,8 @@ export default function SignUpForm() {
           </Button>
         </form>
       </div>
+      <ServiceTermsModal isShowing={isShowingTos} closeModal={() => setIsShowingTos(false)} />
+      <PrivacyPolicyModal isShowing={isShowingPp} closeModal={() => setIsShowingPp(false)} />
     </>
   );
 }
