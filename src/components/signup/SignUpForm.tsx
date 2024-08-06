@@ -14,9 +14,9 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import ConfirmationTimer from "../ConfirmationTimer";
 import PrivacyPolicyModal from "../PrivacyPolicyModal";
 import ServiceTermsModal from "../ServiceTermsModal";
-import Timer from "./Timer";
 import WelcomeMessage from "./WelcomeMessage";
 import useForm from "@/hooks/useForm";
 import { checkCode, checkEmail, checkUsername, sendCode, signup } from "@/actions/signup";
@@ -280,7 +280,7 @@ export default function SignUpForm() {
                   onChange={handleInput}
                   endAdornment={
                     <InputAdornment position="end" className="flex gap-3">
-                      {isTimerRunning && <Timer endTimer={endTimer} />}
+                      {isTimerRunning && <ConfirmationTimer endTimer={endTimer} />}
                       <Button
                         variant="contained"
                         size="small"

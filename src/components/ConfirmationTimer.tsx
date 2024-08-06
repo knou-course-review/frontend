@@ -17,7 +17,7 @@ export const calculateSeconds = (time: number) => {
 const getTime = (ms: number) =>
   `${calculateMinutes(ms).toString().padStart(2, "0")}:${calculateSeconds(ms).toString().padStart(2, "0")}`;
 
-const Timer = memo(function Timer({ endTimer }: TimerProps) {
+const ConfirmationTimer = memo(function ConfirmationTimer({ endTimer }: TimerProps) {
   const elem = useRef<HTMLSpanElement | null>(null);
   let timeLeft = 60 * 5;
   useEffect(() => {
@@ -39,4 +39,4 @@ const Timer = memo(function Timer({ endTimer }: TimerProps) {
   return <span ref={elem}>{getTime(timeLeft)}</span>;
 });
 
-export default Timer;
+export default ConfirmationTimer;
