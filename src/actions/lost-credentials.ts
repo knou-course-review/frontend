@@ -19,6 +19,40 @@ export async function getUsername(email: string) {
   return { isValid: false };
 }
 
+export async function getPasswordAccess(form: { username: string; email: string }) {
+  try {
+    const res = await api.post("/api/v1/users/find-password", form);
+    if (res.ok) {
+      const body = await res.json();
+      console.log(body);
+      return { isValid: true };
+    }
+  } catch (e) {
+    const isError = ErrorSchema.safeParse(e);
+    if (isError.success) {
+      console.log((e as Error).message);
+    }
+  }
+  return { isValid: false };
+}
+
+export async function changePassword(form: { email: string; password: string; rePassword: string }) {
+  try {
+    const res = await api.put("/api/v1/users/change-password", form);
+    if (res.ok) {
+      const body = await res.json();
+      console.log(body);
+      return { isValid: true };
+    }
+  } catch (e) {
+    const isError = ErrorSchema.safeParse(e);
+    if (isError.success) {
+      console.log((e as Error).message);
+    }
+  }
+  return { isValid: false };
+}
+
 export async function sendCode(email: string) {
   try {
     const res = await api.post("/api/v1/mail", { email });
