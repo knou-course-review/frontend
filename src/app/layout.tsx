@@ -3,6 +3,7 @@ import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import { AuthContextProvider } from "@/contexts/auth/AuthContextProvider";
+import TanstackQueryProvider from "@/contexts/tanstack/TanstackQueryProvider";
 import ThemeContextProvider from "@/contexts/theme/ThemeContextProvider";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -24,10 +25,12 @@ export default function RootLayout({
       <body className={inter.className}>
         <InitColorSchemeScript defaultMode="system" />
         <ThemeContextProvider>
-          <AuthContextProvider>
-            <NavBar />
-            <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
-          </AuthContextProvider>
+          <TanstackQueryProvider>
+            <AuthContextProvider>
+              <NavBar />
+              <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
+            </AuthContextProvider>
+          </TanstackQueryProvider>
           <Footer />
         </ThemeContextProvider>
       </body>
