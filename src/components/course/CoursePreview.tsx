@@ -1,23 +1,23 @@
 import Link from "next/link";
 import Label from "../Label";
 
-type CoursePreviewProps = {
+export type CoursePreviewProps = {
   id: number;
   courseName: string;
-  professor: string;
-  department: string;
+  professorName: string;
+  departmentName: string;
   classification: string;
-  year: string;
+  grade: number;
   semester: string;
 };
 
 export default function CoursePreview({
   id,
   courseName,
-  professor,
-  department,
+  professorName,
+  departmentName,
   classification,
-  year,
+  grade,
   semester,
 }: CoursePreviewProps) {
   return (
@@ -25,14 +25,14 @@ export default function CoursePreview({
       <div className="p-6 border border-neutral-400 rounded-2xl flex justify-between h-40">
         <div className="flex flex-col justify-between">
           <h1 className="mb-3 text-2xl font-semibold">{courseName}</h1>
-          <span>{professor}</span>
+          <span>{professorName}</span>
           <span>
-            {year} {semester}
+            {grade}학년 {semester}
           </span>
         </div>
         <div className="flex flex-col justify-between items-end">
           <div className="flex gap-4">
-            <Label text={department} background="bg-neutral-400" display="inline-block" />
+            <Label text={departmentName} background="bg-neutral-400" display="inline-block" />
             <Label text={classification} background="bg-neutral-400" display="inline-block" />
           </div>
           <div>상세 보기</div>
