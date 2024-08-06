@@ -95,7 +95,7 @@ export default function LoginForm() {
           {formData.password.error && <FormHelperText error>{formData.password.errorMsg}</FormHelperText>}
         </div>
         <div className="text-right">
-          <Link href="">아이디 찾기</Link> | <Link href="">비밀번호 찾기</Link>
+          <Link href="/find-username">아이디 찾기</Link> | <Link href="/find-password">비밀번호 찾기</Link>
         </div>
         {isCredentialError && <FormHelperText error>* 잘못된 아이디 또는 비밀번호입니다.</FormHelperText>}
         <Button type="submit" variant="contained" size="large" className="mt-6" disabled={pending} disableElevation>

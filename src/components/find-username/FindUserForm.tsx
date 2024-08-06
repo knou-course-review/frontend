@@ -107,9 +107,11 @@ export default function FindUserForm() {
         <p>
           회원님의 아이디는 <strong>{account}</strong> 입니다.
         </p>
-        <Button variant="contained" disableElevation>
-          <Link href="/login">로그인</Link>
-        </Button>
+        <Link href="/login">
+          <Button variant="contained" disableElevation>
+            로그인
+          </Button>
+        </Link>
       </div>
     );
   return (
