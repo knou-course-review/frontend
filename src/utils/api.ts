@@ -6,38 +6,41 @@ export const api = {
         "Content-Type": "application/json",
       },
     });
-    console.log(res);
     if (res.ok) {
       return res;
     }
     throw new Error(`${res.status} error: ${res.statusText}`);
   },
-  post: async (path: string, data: unknown) => {
+  post: async (path: string, data: { [key: string]: number | boolean | string }, token: string) => {
     const res = await fetch(`${process.env.SERVER_URL}${path}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
       body: JSON.stringify(data),
     });
-    console.log(res);
-    if (res.ok) {
-      return res;
-    }
-    throw new Error(`${res.status} error: ${res.statusText}`);
+    return res;
   },
-  put: async (path: string, data: unknown) => {
+  put: async (path: string, data: { [key: string]: number | boolean | string }, token: string) => {
     const res = await fetch(`${process.env.SERVER_URL}${path}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
       body: JSON.stringify(data),
     });
-    console.log(res);
-    if (res.ok) {
-      return res;
-    }
-    throw new Error(`${res.status} error: ${res.statusText}`);
+    return res;
+  },
+  delete: async (path: string, token: string) => {
+    const res = await fetch(`${process.env.SERVER_URL}${path}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return res;
   },
 };
