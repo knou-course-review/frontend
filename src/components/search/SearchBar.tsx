@@ -7,7 +7,7 @@ import type { FormEvent } from "react";
 
 const searchPlaceholder = "강의, 학과 또는 교수님을 검색해 보세요.";
 
-export default function SearchBar() {
+export default function SearchBar({ defaultSearchInput }: { defaultSearchInput?: string }) {
   const router = useRouter();
 
   const handleSubmit = (e: FormEvent) => {
@@ -29,6 +29,7 @@ export default function SearchBar() {
       <TextField
         variant="standard"
         name="name"
+        defaultValue={defaultSearchInput}
         placeholder={searchPlaceholder}
         fullWidth
         InputProps={{
