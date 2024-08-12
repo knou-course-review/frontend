@@ -18,7 +18,6 @@ export async function GET(req: NextRequest) {
       const res = await api.get(`/api/v1/review/${reviewIdQuery}`, userSession.token);
       if (res.status === 200) {
         const body = await res.json();
-        console.log(body);
         return NextResponse.json(body.data);
       }
     } catch (e) {
@@ -27,10 +26,8 @@ export async function GET(req: NextRequest) {
   } else if (pageQuery) {
     try {
       const res = await api.get(`/api/v2/course/${courseIdQuery}/reviews?page=${pageQuery}`, userSession.token);
-      console.log(res);
       if (res.status === 200) {
         const body = await res.json();
-        console.log(body);
         return NextResponse.json(body.data);
       }
     } catch (e) {

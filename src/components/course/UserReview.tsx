@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AccountCircle, Delete, Warning } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Warning from "@mui/icons-material/Warning";
 import UserReportModal from "../UserReportModal";
-import DeleteReviewModal from "../DeleteReviewModal";
 
 type UserReviewProps = {
   id: number;
@@ -47,15 +46,7 @@ export default function UserReview({ id, userId, username, content, createdAt, o
             <AccountCircle /> {username} <br />
             <span className="text-sm text-slate-400">{extractDate(createdAt)}</span>
           </div>
-          {owner ? (
-            <IconButton className="self-start">
-              <Delete onClick={() => openModal()} />
-            </IconButton>
-          ) : (
-            <IconButton className="self-start">
-              <Warning onClick={() => openModal()} />
-            </IconButton>
-          )}
+          {!owner && <Warning className="self-start cursor-pointer" onClick={() => openModal()} />}
         </div>
         <div className={`relative mt-4 whitespace-pre-line overflow-hidden ${isCollapsed && "max-h-[120px]"}`}>
           <p ref={contentElem}>{content}</p>
@@ -66,11 +57,7 @@ export default function UserReview({ id, userId, username, content, createdAt, o
           </div>
         )}
       </div>
-      {owner ? (
-        <DeleteReviewModal isShowing={isShowing} reviewId={id} closeModal={closeModal} />
-      ) : (
-        <UserReportModal isShowing={isShowing} userId={userId} username={username} closeModal={closeModal} />
-      )}
+      <UserReportModal isShowing={isShowing} userId={userId} username={username} closeModal={closeModal} />
     </>
   );
 }

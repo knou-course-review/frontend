@@ -1,23 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSession } from "./lib/auth";
 
 export async function middleware(req: NextRequest) {
-  console.log(req);
   const originUrl = req.nextUrl.origin;
   const path = req.nextUrl.pathname;
-  try {
-    const token = req.cookies.get("knous")?.value;
-    if (token) {
-      if (path === "/login") {
-        return NextResponse.redirect(`${originUrl}/`);
-      }
-      return NextResponse.next();
-    }
-  } catch (e) {
-    console.log(e);
-    return NextResponse.redirect(`${originUrl}/login`);
+  const userSession = await getSession();
+
+  if (path === "/login") {
+    if (userSession.isLoggedIn) return NextResponse.redirect(`${originUrl}/`);
+    else return NextResponse.next();
   }
+
+  if (!userSession.isLoggedIn) return NextResponse.redirect(`${originUrl}/login`);
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/login", "/courses/:path*"],
+  matcher: ["/login", "/courses/:path*", "/account/:path*"],
 };

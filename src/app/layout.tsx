@@ -2,10 +2,7 @@ import { Inter } from "next/font/google";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
-import { AuthContextProvider } from "@/contexts/auth/AuthContextProvider";
-import { DraftContextProvider } from "@/contexts/draft/DraftContextProvider";
-import TanstackQueryProvider from "@/contexts/tanstack/TanstackQueryProvider";
-import ThemeContextProvider from "@/contexts/theme/ThemeContextProvider";
+import ContextProviders from "@/contexts";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -25,17 +22,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <InitColorSchemeScript defaultMode="system" />
-        <ThemeContextProvider>
-          <TanstackQueryProvider>
-            <AuthContextProvider>
-              <DraftContextProvider>
-                <NavBar />
-                <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
-              </DraftContextProvider>
-            </AuthContextProvider>
-          </TanstackQueryProvider>
+        <ContextProviders>
+          <NavBar />
+          <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
           <Footer />
-        </ThemeContextProvider>
+        </ContextProviders>
       </body>
     </html>
   );
