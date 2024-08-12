@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AccountCircle, Warning } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import UserReportModal from "../UserReportModal";
@@ -8,29 +8,54 @@ import UserReportModal from "../UserReportModal";
 type UserReviewProps = {
   id: number;
   username: string;
-  review: string;
-  reviewDate: string;
+  content: string;
+  createdAt: string;
 };
 
-export default function UserReview({ id, username, review, reviewDate }: UserReviewProps) {
+const extractDate = (string: string) => {
+  const array = string.split("T");
+  return array[0];
+};
+
+export default function UserReview({ id, username, content, createdAt }: UserReviewProps) {
+  const contentElem = useRef<HTMLParagraphElement | null>(null);
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isExpandable, setIsExpandable] = useState(false);
   const [isShowing, setIsShowing] = useState(false);
-  const openModal = () => {
-    setIsShowing(true);
+
+  useEffect(() => {
+    if (!contentElem.current) return;
+    const contentHeight = contentElem.current.scrollHeight;
+    if (contentHeight > 120) setIsExpandable(true);
+  }, []);
+
+  const handleExpand = () => {
+    setIsCollapsed(false);
+    setIsExpandable(false);
   };
+  const openModal = () => setIsShowing(true);
   const closeModal = () => setIsShowing(false);
+
   return (
     <>
-      <div className="p-6 border border-neutral-400 rounded-2xl flex flex-col justify-between h-48">
+      <div className={`p-6 border border-neutral-400 rounded-2xl`}>
         <div className="flex justify-between">
           <div>
             <AccountCircle /> {username} <br />
-            <span>{reviewDate}</span>
+            <span className="text-sm text-slate-400">{extractDate(createdAt)}</span>
           </div>
           <IconButton className="self-start">
             <Warning onClick={() => openModal()} />
           </IconButton>
         </div>
-        <p>{review}</p>
+        <div className={`relative mt-4 whitespace-pre-line overflow-hidden ${isCollapsed && "max-h-[120px]"}`}>
+          <p ref={contentElem}>{content}</p>
+        </div>
+        {isExpandable && (
+          <div onClick={handleExpand}>
+            ... <span className="text-cyan-600 cursor-pointer">더보기</span>
+          </div>
+        )}
       </div>
       <UserReportModal isShowing={isShowing} userId={id} username={username} closeModal={closeModal} />
     </>
