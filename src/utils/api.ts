@@ -1,9 +1,10 @@
 export const api = {
-  get: async (path: string) => {
+  get: async (path: string, token?: string) => {
     const res = await fetch(`${process.env.SERVER_URL}${path}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        ...(token && { Authorization: "Bearer " + token }),
       },
     });
     if (res.ok) {
@@ -11,23 +12,23 @@ export const api = {
     }
     throw new Error(`${res.status} error: ${res.statusText}`);
   },
-  post: async (path: string, data: { [key: string]: number | boolean | string }, token: string) => {
+  post: async (path: string, data: { [key: string]: number | boolean | string }, token?: string) => {
     const res = await fetch(`${process.env.SERVER_URL}${path}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        ...(token && { Authorization: "Bearer " + token }),
       },
       body: JSON.stringify(data),
     });
     return res;
   },
-  put: async (path: string, data: { [key: string]: number | boolean | string }, token: string) => {
+  put: async (path: string, data: { [key: string]: number | boolean | string }, token?: string) => {
     const res = await fetch(`${process.env.SERVER_URL}${path}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        ...(token && { Authorization: "Bearer " + token }),
       },
       body: JSON.stringify(data),
     });

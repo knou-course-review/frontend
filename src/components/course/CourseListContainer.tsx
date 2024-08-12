@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import CoursePreview from "./CoursePreview";
+import CoursePreview, { type CoursePreviewProps } from "./CoursePreview";
 import PageNavigator from "../PageNavigator";
-import type { CourseInfoProps } from "./CourseInfo";
 
 const fetchAllCourses = (page = 1) => fetch(`/api/courses?page=${page}`).then((res) => res.json());
 
@@ -22,7 +21,7 @@ export default function CourseListContainer() {
   if (!data) return <div className="w-full text-center">Loading ...</div>;
   return (
     <div className="flex flex-col gap-4">
-      {data.content.map((course: CourseInfoProps) => (
+      {data.content.map((course: CoursePreviewProps) => (
         <CoursePreview key={course.id} {...course} />
       ))}
       <PageNavigator currentPage={data.pageNumber} pages={data.totalPages} handlePageSelect={handlePageSelect} />

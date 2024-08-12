@@ -1,3 +1,5 @@
+"use server";
+
 import { getSession } from "@/lib/auth";
 import { ErrorSchema } from "@/schema/error";
 import { api } from "@/utils/api";
@@ -13,6 +15,8 @@ export async function postReview(courseId: string, userReview: UserReview) {
   try {
     const res = await api.post(`/api/v1/course/${courseId}/review`, userReview, userSession.token);
     if (res.ok) {
+      const body = await res.json();
+      console.log(body);
       return { isValid: true };
     }
   } catch (e) {

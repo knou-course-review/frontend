@@ -13,7 +13,7 @@ export default function NavBar() {
   return (
     <div className="flex border-b border-b-slate-400 dark:border-b-slate-500 justify-items-center h-24 items-center p-8">
       <div>
-        <Link href="/">로고</Link>
+        <Link href="/">KNOU</Link>
       </div>
       <div className="flex gap-7 ml-auto list-none">
         {session && session.isLoggedIn ? (

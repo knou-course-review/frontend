@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { api } from "@/utils/api";
 import { editReview, postReview } from "@/actions/user-review";
+import { getSession } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
+  // 리뷰 GET 요청은 토큰 필요
+  const userSession = await getSession();
+  if (!userSession.isLoggedIn || !userSession.token) return NextResponse.json({});
+
   const { searchParams } = new URL(req.url);
   const reviewIdQuery = searchParams.get("rid");
   const courseIdQuery = searchParams.get("cid");
@@ -10,7 +15,7 @@ export async function GET(req: NextRequest) {
 
   if (reviewIdQuery) {
     try {
-      const res = await api.get(`/api/v1/review/${reviewIdQuery}`);
+      const res = await api.get(`/api/v1/review/${reviewIdQuery}`, userSession.token);
       if (res.status === 200) {
         const body = await res.json();
         console.log(body);
@@ -21,7 +26,7 @@ export async function GET(req: NextRequest) {
     }
   } else if (pageQuery) {
     try {
-      const res = await api.get(`/api/v2/course/${courseIdQuery}/reviews?page=${pageQuery}`);
+      const res = await api.get(`/api/v2/course/${courseIdQuery}/reviews?page=${pageQuery}`, userSession.token);
       console.log(res);
       if (res.status === 200) {
         const body = await res.json();
