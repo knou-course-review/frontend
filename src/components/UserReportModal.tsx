@@ -31,9 +31,8 @@ export default function UserReportModal({ isShowing, username, userId, closeModa
 
   const postReport = async (content: string) => {
     const res = await reportUser(userId.toString(), { content });
-    if (res.isValid) {
-      alert("신고해주셔서 감사합니다.");
-    } else alert("에러가 발생했습니다 잠시 후 다시 시도해 주세요.");
+    if (res.isValid) alert("신고해주셔서 감사합니다.");
+    else alert("오류가 발생했습니다 잠시 후 다시 시도해 주세요.");
     closeModal();
   };
 
