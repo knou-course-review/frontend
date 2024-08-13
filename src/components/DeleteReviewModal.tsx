@@ -8,13 +8,16 @@ type DeleteReviewModalProps = {
   reviewId: number;
   isShowing: boolean;
   closeModal: () => void;
+  refreshData: () => void;
 };
 
-export default function DeleteReviewModal({ reviewId, isShowing, closeModal }: DeleteReviewModalProps) {
+export default function DeleteReviewModal({ reviewId, isShowing, closeModal, refreshData }: DeleteReviewModalProps) {
   const handleReport = async () => {
     const res = await deleteReview(reviewId.toString());
-    if (res.isValid) alert("리뷰를 삭제했습니다.");
-    else alert("오류가 발생했습니다 잠시 후 다시 시도해 주세요.");
+    if (res.isValid) {
+      refreshData();
+      alert("리뷰를 삭제했습니다.");
+    } else alert("오류가 발생했습니다 잠시 후 다시 시도해 주세요.");
     closeModal();
   };
 

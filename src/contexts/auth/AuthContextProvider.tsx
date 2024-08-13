@@ -23,7 +23,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const getExistingSession = async () => {
       const res = await fetch("/api/check-session");
       const user = await res.json();
-      console.log(user);
       if (user.isLoggedIn && user.payload) {
         // fetch username
         setSession({ username: "temp", token: user.token });
