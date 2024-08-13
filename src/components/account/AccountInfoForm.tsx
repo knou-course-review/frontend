@@ -6,8 +6,8 @@ import { useState } from "react";
 export default function AccountInfoForm() {
   const [isExpanded, setIsExpanded] = useState(false);
   return (
-    <div className="flex flex-col min-h-96">
-      <List>
+    <div className="flex flex-col justify-between">
+      <List sx={{ width: "fit-content" }}>
         <ListItem>
           <ListItemText sx={{ width: "5rem" }}>아이디</ListItemText>
           <TextField value={"eflekjf"} size="small" disabled />
@@ -36,6 +36,9 @@ export default function AccountInfoForm() {
           </div>
         </form>
       </List>
+      <Button className="self-end text-rose-600" disableElevation>
+        회원 탈퇴
+      </Button>
     </div>
   );
 }

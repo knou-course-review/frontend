@@ -6,9 +6,6 @@ export default function MyAccountMenu() {
       <li>
         <Link href="/account">내 정보 수정</Link>
       </li>
-      <li>
-        <Link href="/account/reviews">내가 쓴 리뷰</Link>
-      </li>
     </div>
   );
 }
