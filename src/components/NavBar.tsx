@@ -5,14 +5,16 @@ import { getSession } from "@/lib/auth";
 export default async function NavBar() {
   const userSession = await getSession();
   return (
-    <div className="flex border-b border-b-slate-400 dark:border-b-slate-500 justify-items-center h-24 items-center p-8">
+    <div className="flex h-24 p-8 justify-items-center items-center border-b border-b-slate-400 dark:border-b-slate-500">
       <div>
         <Link href="/">KNOU</Link>
       </div>
       <div className="flex gap-7 ml-auto list-none">
         {userSession.isLoggedIn ? (
           <>
-            <li>마이페이지</li>
+            <li>
+              <Link href="/account">마이페이지</Link>
+            </li>
             <LogoutButton />
           </>
         ) : (
