@@ -22,9 +22,9 @@ export default function SearchBar({ defaultSearchInput }: { defaultSearchInput?:
   return (
     <form onSubmit={handleSubmit} className="flex w-full gap-2">
       <Select name="searchType" size="small" defaultValue="courseName" autoWidth>
-        <MenuItem value="courseName">강의 검색</MenuItem>
-        <MenuItem value="departmentName">학과 검색</MenuItem>
-        <MenuItem value="professorName">교수 검색</MenuItem>
+        <MenuItem value="courseName">강의</MenuItem>
+        <MenuItem value="departmentName">학과</MenuItem>
+        <MenuItem value="professorName">교수</MenuItem>
       </Select>
       <TextField
         variant="standard"

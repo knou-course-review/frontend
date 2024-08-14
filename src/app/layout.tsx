@@ -22,7 +22,9 @@ export default function RootLayout({
         <InitColorSchemeScript defaultMode="system" />
         <ContextProviders>
           <NavBar />
-          <main className="grid place-content-center min-h-[calc(100dvh-20rem)]">{children}</main>
+          <main className="grid place-content-center min-h-[calc(100dvh-12rem)] sm:min-h-[calc(100dvh-20rem)]">
+            {children}
+          </main>
           <Footer />
         </ContextProviders>
       </body>

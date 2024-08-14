@@ -5,5 +5,5 @@ type LabelProps = {
 };
 
 export default function Label({ text, background, display = "block" }: LabelProps) {
-  return <div className={`text-center text-white px-4 py-2 rounded-full ${display} ${background}`}>{text}</div>;
+  return <div className={`px-3 sm:px-4 py-1 rounded-full text-center text-sm sm:text-base text-white ${display} ${background}`}>{text}</div>;
 }

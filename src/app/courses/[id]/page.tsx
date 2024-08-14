@@ -17,7 +17,7 @@ export default async function CourseDetails({ params }: { params: { id: string }
   const courseData = await fetchCourse(params.id);
   if (!courseData) return null;
   return (
-    <div className="flex flex-col w-[950px] gap-4 py-24">
+    <div className="flex flex-col w-[93dvw] xl:w-[950px] pt-10 pb-24 xl:py-24 gap-4">
       <CourseInfo courseData={courseData} />
       <CourseReviewContainer courseId={params.id} />
     </div>

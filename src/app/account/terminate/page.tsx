@@ -3,10 +3,10 @@ import TerminationForm from "@/components/account/TerminationForm";
 
 export default function TerminateAccount() {
   return (
-    <div className="lg:min-w-[800px] min-h-[500px] p-8 rounded-2xl border bg-white border-slate-400 dark:border-slate-500">
+    <div className="min-h-[500px] w-[90dvw] lg:w-[800px] p-8 rounded-2xl border bg-white border-slate-400 dark:border-slate-500">
       <h1 className="text-2xl font-bold">회원 탈퇴</h1>
       <Divider sx={{ padding: "0.5rem" }} />
-      <div className="flex flex-col gap-6 mt-6">
+      <div className="flex flex-col mt-6 gap-6">
         <p>
           <strong>KNOU</strong> 서비스에서 탈퇴합니다.
         </p>

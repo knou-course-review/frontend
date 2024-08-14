@@ -40,14 +40,13 @@ export default function NewReviewForm({ courseId, refreshData }: NewReviewFormPr
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="mt-8 text-center text-cyan-600">본 강의를 수강하셨나요? 리뷰를 등록해 주세요!</p>
-      <h1 className="font-bold text-lg">내 리뷰 남기기</h1>
+      <h1 className="mt-8 font-bold text-lg">내 리뷰 남기기</h1>
       <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
         <TextField
           onChange={(e) => setContent(e.target.value)}
           value={content}
           name="content"
-          placeholder="내 리뷰 작성하기"
+          placeholder="본 강의를 수강하셨나요? 리뷰를 남겨주세요!"
           multiline
           minRows={4}
           maxRows={10}

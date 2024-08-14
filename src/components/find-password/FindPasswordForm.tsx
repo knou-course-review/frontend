@@ -168,7 +168,7 @@ export default function FindPasswordForm() {
     );
   if (isValidAccount)
     return (
-      <div className="flex w-100">
+      <div>
         <form onSubmit={handlePasswordChange} className="w-full flex flex-col gap-4">
           <p className="text-center">새 비밀번호를 설정해 주세요.</p>
           <div>
@@ -220,7 +220,7 @@ export default function FindPasswordForm() {
       </div>
     );
   return (
-    <div className="flex w-100">
+    <div>
       <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
         <div>
           <FormControl variant="outlined" fullWidth>

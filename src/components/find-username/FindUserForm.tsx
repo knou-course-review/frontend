@@ -115,7 +115,7 @@ export default function FindUserForm() {
       </div>
     );
   return (
-    <div className="flex w-100">
+    <div>
       <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
         <div>
           <FormControl variant="outlined" fullWidth>

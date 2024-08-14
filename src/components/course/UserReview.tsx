@@ -6,8 +6,8 @@ import Delete from "@mui/icons-material/Delete";
 import Edit from "@mui/icons-material/Edit";
 import Warning from "@mui/icons-material/Warning";
 import DeleteReviewModal from "../DeleteReviewModal";
-import UserReportModal from "../UserReportModal";
 import EditReviewForm from "./EditReviewForm";
+import UserReportModal from "../UserReportModal";
 
 type UserReviewProps = {
   id: number;
@@ -17,6 +17,7 @@ type UserReviewProps = {
   createdAt: string;
   owner: boolean;
   refreshData: () => void;
+  handleLastPage: () => void;
 };
 
 const extractDate = (string: string) => {
@@ -24,7 +25,16 @@ const extractDate = (string: string) => {
   return array[0];
 };
 
-export default function UserReview({ id, userId, username, content, createdAt, owner, refreshData }: UserReviewProps) {
+export default function UserReview({
+  id,
+  userId,
+  username,
+  content,
+  createdAt,
+  owner,
+  refreshData,
+  handleLastPage,
+}: UserReviewProps) {
   const contentElem = useRef<HTMLParagraphElement | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isExpandable, setIsExpandable] = useState(false);
@@ -50,10 +60,10 @@ export default function UserReview({ id, userId, username, content, createdAt, o
 
   return (
     <>
-      <div className={`p-6 border border-neutral-400 rounded-2xl`}>
+      <div className={`p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-neutral-400`}>
         <div className="flex justify-between">
           <div>
-            <AccountCircle /> {username} <br />
+            <AccountCircle fontSize="small" /> {username} <br />
             <span className="text-sm text-slate-400">{extractDate(createdAt)}</span>
           </div>
           {owner ? (
@@ -84,7 +94,12 @@ export default function UserReview({ id, userId, username, content, createdAt, o
         )}
       </div>
       {owner ? (
-        <DeleteReviewModal isShowing={isShowing} reviewId={id} closeModal={closeModal} refreshData={refreshData} />
+        <DeleteReviewModal
+          isShowing={isShowing}
+          reviewId={id}
+          closeModal={closeModal}
+          handleLastPage={handleLastPage}
+        />
       ) : (
         <UserReportModal isShowing={isShowing} userId={userId} username={username} closeModal={closeModal} />
       )}

@@ -24,7 +24,6 @@ const fetchAllReviews = (page = 1, courseId: string) =>
   fetch(`/api/reviews?cid=${courseId}&page=${page}`).then((res) => res.json());
 
 export default function CourseReviewContainer({ courseId }: CourseReviewContainerProps) {
-  const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const { data, error, refetch } = useQuery({
     queryKey: ["all-reviews", page],
@@ -34,6 +33,11 @@ export default function CourseReviewContainer({ courseId }: CourseReviewContaine
 
   const handlePageSelect = (value: number) => setPage(value);
   const refreshData = () => refetch();
+  const handleLastPage = () => {
+    if (data.content.length === 1 && page === data.totalPages) {
+      setPage(data.totalPages - 1);
+    } else refreshData();
+  };
 
   if (error) return <div className="flex flex-col gap-4">에러가 발생했습니다!</div>;
   if (!data) return <div className="w-full text-center">Loading ...</div>;
@@ -46,10 +50,10 @@ export default function CourseReviewContainer({ courseId }: CourseReviewContaine
         <h1 className="font-bold text-lg">수강생 리뷰</h1>
       </div>
       <div className="flex flex-col gap-4">
-        {data.content.length > 0 ? (
+        {data.content?.length > 0 ? (
           <>
             {data.content.map((review: UserReviewData) => (
-              <UserReview key={review.id} {...review} refreshData={refreshData} />
+              <UserReview key={review.id} {...review} refreshData={refreshData} handleLastPage={handleLastPage} />
             ))}
             <PageNavigator currentPage={data.pageNumber} pages={data.totalPages} handlePageSelect={handlePageSelect} />
           </>
