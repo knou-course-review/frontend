@@ -1,12 +1,10 @@
-import { Inter } from "next/font/google";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import ContextProviders from "@/contexts";
+import { noto_sans_kr } from "@/constants/next-font";
 import type { Metadata } from "next";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "KNOU",
@@ -20,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={noto_sans_kr.className}>
         <InitColorSchemeScript defaultMode="system" />
         <ContextProviders>
           <NavBar />
