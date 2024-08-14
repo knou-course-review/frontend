@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import { Button, Checkbox, FormControlLabel, FormHelperText } from "@mui/material";
-import { terminateAccount } from "@/actions/account-termination";
+// import { terminateAccount } from "@/actions/account-termination";
 
 export default function TerminationForm() {
   const [error, setError] = useState<{ isChecked?: string[] }>({});
@@ -13,14 +13,14 @@ export default function TerminationForm() {
     const formData = new FormData(form);
     const checkedStatus = formData.get("agreementCheck");
     const data = { isChecked: checkedStatus === "on" };
-    const res = await terminateAccount(data);
+    // const res = await terminateAccount(data);
 
-    if (res?.isValid) {
-      redirect("/");
-    }
-    if (res.errors?.isChecked) {
-      setError(res.errors);
-    }
+    // if (res?.isValid) {
+    //   redirect("/");
+    // }
+    // if (res.errors?.isChecked) {
+    //   setError(res.errors);
+    // }
   };
   return (
     <form className="flex flex-col gap-4 mt-6" onSubmit={handleSubmit}>
