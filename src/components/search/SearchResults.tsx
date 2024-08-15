@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import CoursePreview, { type CoursePreviewProps } from "../course/CoursePreview";
+import CoursePreviewSkeleton from "../course/CoursePreviewSkeleton";
 import NoResults from "./NoResults";
 import PageNavigator from "../PageNavigator";
 import type { CourseSearchParams } from "@/app/search/page";
@@ -24,19 +25,22 @@ export default function SearchResults({ searchType, name }: CourseSearchParams) 
 
   const handlePageSelect = (value: number) => setPage(value);
 
-  if (error) return <div className="flex flex-col gap-4">에러가 발생했습니다!</div>;
-  if (!data) return <div className="w-full text-center">Loading ...</div>;
+  if (error) return <div className="text-center">오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>;
   return (
     <div className="flex flex-col gap-4">
-      {data.content.length > 0 ? (
-        <>
-          {data.content.map((course: CoursePreviewProps) => (
-            <CoursePreview key={course.id} {...course} />
-          ))}
-          <PageNavigator currentPage={data.pageNumber} pages={data.totalPages} handlePageSelect={handlePageSelect} />
-        </>
+      {data ? (
+        data.content.length > 0 ? (
+          <>
+            {data.content.map((course: CoursePreviewProps) => (
+              <CoursePreview key={course.id} {...course} />
+            ))}
+            <PageNavigator currentPage={data.pageNumber} pages={data.totalPages} handlePageSelect={handlePageSelect} />
+          </>
+        ) : (
+          <NoResults />
+        )
       ) : (
-        <NoResults />
+        Array.from({ length: 10 }, () => <CoursePreviewSkeleton />)
       )}
     </div>
   );

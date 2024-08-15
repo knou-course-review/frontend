@@ -3,14 +3,13 @@
 import { useRouter } from "next/navigation";
 import Search from "@mui/icons-material/Search";
 import { IconButton, MenuItem, Select, TextField } from "@mui/material";
-import type { FormEvent } from "react";
 
-const searchPlaceholder = "강의, 학과 또는 교수님을 검색해 보세요.";
+const searchPlaceholder = "내가 찾는 강의";
 
 export default function SearchBar({ defaultSearchInput }: { defaultSearchInput?: string }) {
   const router = useRouter();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);

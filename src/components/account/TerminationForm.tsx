@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 // import { redirect } from "next/navigation";
 import { Button, Checkbox, FormControlLabel, FormHelperText } from "@mui/material";
 // import { terminateAccount } from "@/actions/account-termination";
 
 export default function TerminationForm() {
   const [error, setError] = useState<{ isChecked?: string[] }>({});
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);

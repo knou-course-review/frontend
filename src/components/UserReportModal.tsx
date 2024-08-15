@@ -3,7 +3,6 @@
 import { Button, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import ModalFrame from "./ModalFrame";
 import { reportUser } from "@/actions/report-user";
-import type { FormEvent } from "react";
 
 type UserReportModalProps = {
   isShowing: boolean;
@@ -19,7 +18,7 @@ const REPORT_REASONS = {
 };
 
 export default function UserReportModal({ isShowing, username, userId, closeModal }: UserReportModalProps) {
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);

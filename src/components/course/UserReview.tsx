@@ -60,7 +60,7 @@ export default function UserReview({
 
   return (
     <>
-      <div className={`p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-neutral-400`}>
+      <div className={`w-full p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-neutral-400`}>
         <div className="flex justify-between">
           <div>
             <AccountCircle fontSize="small" /> {username} <br />

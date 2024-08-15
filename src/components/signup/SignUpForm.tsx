@@ -1,6 +1,6 @@
 "use client";
 
-import { type ChangeEvent, type FocusEventHandler, type FormEvent, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -50,7 +50,7 @@ export default function SignUpForm() {
   const [isShowingTos, setIsShowingTos] = useState(false);
   const [isShowingPp, setIsShowingPp] = useState(false);
 
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     const name = e.target.name;
 
@@ -66,7 +66,7 @@ export default function SignUpForm() {
     updateFormData(name, input);
   };
 
-  const validatePassword: FocusEventHandler<HTMLInputElement> = (e) => {
+  const validatePassword: React.FocusEventHandler<HTMLInputElement> = (e) => {
     const input = e.target.value;
     if (input.length > 0 && input.length < 8) {
       updateFormData("password", input, true, "* 비밀번호는 8자리 이상이어야 합니다.");
@@ -78,7 +78,7 @@ export default function SignUpForm() {
     }
   };
 
-  const validatePasswordConfirm: FocusEventHandler<HTMLInputElement> = (e) => {
+  const validatePasswordConfirm: React.FocusEventHandler<HTMLInputElement> = (e) => {
     const input = e.target.value;
     const error = input !== formData.password.value;
     const errorMsg = input !== formData.password.value ? "* 비밀번호가 일치하지 않습니다." : "";
@@ -88,7 +88,7 @@ export default function SignUpForm() {
     }
   };
 
-  const handleCheckbox = (e: ChangeEvent<HTMLInputElement>, ...keys: string[]) => {
+  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>, ...keys: string[]) => {
     setIsChecked((prev) => {
       const checkedStatus = { ...prev };
       keys.forEach((key) => (checkedStatus[key as keyof typeof prev] = e.target.checked));
@@ -158,7 +158,7 @@ export default function SignUpForm() {
     setPendingCode(false);
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const signupData = {
       username: {

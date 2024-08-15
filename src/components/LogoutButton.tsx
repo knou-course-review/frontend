@@ -7,7 +7,7 @@ export default function LogoutButton() {
     await logout();
   };
   return (
-    <li className="cursor-pointer" onClick={handleLogout}>
+    <li className="orange-link cursor-pointer" onClick={handleLogout}>
       로그아웃
     </li>
   );

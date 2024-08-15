@@ -1,6 +1,6 @@
 "use client";
 
-import { type ChangeEvent, type FocusEventHandler, type FormEvent, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import Cancel from "@mui/icons-material/Cancel";
 import Visibility from "@mui/icons-material/Visibility";
@@ -37,7 +37,7 @@ export default function FindPasswordForm() {
   const [changedPassword, setChangedPassword] = useState(false);
   const [formError, setFormError] = useState({ isError: false, errorMsg: "" });
 
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     const name = e.target.name;
     if (name === "confirmationCode") {
@@ -99,7 +99,7 @@ export default function FindPasswordForm() {
 
   const handleConfirmationPasswordVisibility = () => setShowConfirmationPassword(!showConfirmationPassword);
 
-  const validatePassword: FocusEventHandler<HTMLInputElement> = (e) => {
+  const validatePassword: React.FocusEventHandler<HTMLInputElement> = (e) => {
     const input = e.target.value;
     if (input.length > 0 && input.length < 8) {
       updateFormData("password", input, true, "* 비밀번호는 8자리 이상이어야 합니다.");
@@ -109,14 +109,14 @@ export default function FindPasswordForm() {
     }
   };
 
-  const validatePasswordConfirm: FocusEventHandler<HTMLInputElement> = (e) => {
+  const validatePasswordConfirm: React.FocusEventHandler<HTMLInputElement> = (e) => {
     const input = e.target.value;
     const error = input !== formData.password.value;
     const errorMsg = input !== formData.password.value ? "* 비밀번호가 일치하지 않습니다." : "";
     updateFormData("passwordConfirm", input, error, errorMsg);
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.confirmationCode.value === "")
       return updateFormData("confirmationCode", formData.confirmationCode.value, true, "* 인증번호를 입력해 주세요.");
@@ -132,7 +132,7 @@ export default function FindPasswordForm() {
     setIsValidAccount(true);
   };
 
-  const handlePasswordChange = async (e: FormEvent) => {
+  const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password.value === "")
       updateFormData("password", formData.password.value, true, "* 비밀번호를 입력해 주세요.");
