@@ -159,7 +159,7 @@ export default function FindUserForm() {
                     disabled={isTimerRunning || pendingCode}
                     disableElevation
                   >
-                    {pendingCode ? "발송중..." : isExpiredCode ? "재발송" : "인증번호 발송"}
+                    {isExpiredCode ? "재발송" : "인증번호 발송"}
                   </Button>
                 </InputAdornment>
               }
@@ -177,7 +177,7 @@ export default function FindUserForm() {
           disabled={!isTimerRunning || pending}
           disableElevation
         >
-          {pending ? "..." : "아이디 찾기"}
+          아이디 찾기
         </Button>
       </form>
     </div>

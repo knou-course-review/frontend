@@ -18,6 +18,7 @@ type UserReviewProps = {
   owner: boolean;
   refreshData: () => void;
   handleLastPage: () => void;
+  openSnackbar: (msg: string) => void;
 };
 
 const extractDate = (string: string) => {
@@ -34,6 +35,7 @@ export default function UserReview({
   owner,
   refreshData,
   handleLastPage,
+  openSnackbar,
 }: UserReviewProps) {
   const contentElem = useRef<HTMLParagraphElement | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -60,7 +62,9 @@ export default function UserReview({
 
   return (
     <>
-      <div className={`w-full p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-neutral-400`}>
+      <div
+        className={`w-full p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#aab9e3] dark:bg-[#1d2945] dark:border-slate-600`}
+      >
         <div className="flex justify-between">
           <div>
             <AccountCircle fontSize="small" /> {username} <br />
@@ -99,9 +103,16 @@ export default function UserReview({
           reviewId={id}
           closeModal={closeModal}
           handleLastPage={handleLastPage}
+          openSnackbar={openSnackbar}
         />
       ) : (
-        <UserReportModal isShowing={isShowing} userId={userId} username={username} closeModal={closeModal} />
+        <UserReportModal
+          isShowing={isShowing}
+          reviewId={id}
+          username={username}
+          closeModal={closeModal}
+          openSnackbar={openSnackbar}
+        />
       )}
     </>
   );

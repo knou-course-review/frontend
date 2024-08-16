@@ -12,13 +12,26 @@ export default function ThemeContextProvider({ children }: { children: React.Rea
       fontFamily: noto_sans_kr.style.fontFamily,
     },
     colorSchemes: {
-      // light: {
-      //   palette: {
-      //     primary: {
-      //       main: "#",
-      //     },
-      //   },
-      // },
+      light: {
+        palette: {
+          primary: {
+            main: "#1b60c6",
+            light: "#20c1f5",
+            dark: "#1c3d8d",
+          },
+          secondary: {
+            main: "#ebae1c",
+            light: "#ffe291",
+            dark: "#cf7a1f",
+          },
+          common: {
+            black: "rgb(52, 52, 52)",
+          },
+          error: {
+            main: "rgb(225, 29, 72)",
+          },
+        },
+      },
       dark: {
         palette: {
           // primary: {
@@ -53,6 +66,17 @@ export default function ThemeContextProvider({ children }: { children: React.Rea
         styleOverrides: {
           root: {
             borderRadius: "0.5rem",
+          },
+        },
+      },
+      MuiSnackbarContent: {
+        styleOverrides: {
+          root: ({ theme }) => {
+            return {
+              backgroundColor:
+                theme.palette.mode === "light" ? theme.palette.primary.dark : theme.palette.primary.light,
+              borderRadius: "0.5rem",
+            };
           },
         },
       },

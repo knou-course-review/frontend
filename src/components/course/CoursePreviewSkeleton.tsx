@@ -2,7 +2,7 @@ import Skeleton from "@mui/material/Skeleton";
 
 export default function CoursePreviewSkeleton() {
   return (
-    <div className="flex w-full h-40 p-4 sm:p-6 justify-between rounded-2xl border border-neutral-400 hover:border-[#20c1f5]">
+    <div className="flex w-full h-40 p-4 sm:p-6 justify-between rounded-2xl border border-[#aab9e3] dark:bg-[#1d2945] dark:border-slate-600 hover:border-[#20c1f5]">
       <div className="flex flex-col">
         <Skeleton animation="wave" variant="text" width={150} height={70} />
         <Skeleton animation="wave" width="80%" />

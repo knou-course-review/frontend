@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import Link from "next/link";
 import {
   Button,
   Checkbox,
@@ -15,8 +16,6 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import ConfirmationTimer from "../ConfirmationTimer";
-import PrivacyPolicyModal from "../PrivacyPolicyModal";
-import ServiceTermsModal from "../ServiceTermsModal";
 import WelcomeMessage from "./WelcomeMessage";
 import useForm from "@/hooks/useForm";
 import { checkCode, checkEmail, checkUsername, sendCode, signup } from "@/actions/signup";
@@ -47,8 +46,6 @@ export default function SignUpForm() {
   const [pendingEmail, setPendingEmail] = useState(false);
   const [pendingCode, setPendingCode] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
-  const [isShowingTos, setIsShowingTos] = useState(false);
-  const [isShowingPp, setIsShowingPp] = useState(false);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -205,7 +202,7 @@ export default function SignUpForm() {
   return (
     <>
       <h1 className="font-bold text-2xl mb-8 text-center">회원가입</h1>
-      <div className="flex w-100">
+      <div className="flex w-80">
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-8">
           <div>
             <FormControl variant="outlined" fullWidth>
@@ -256,7 +253,7 @@ export default function SignUpForm() {
                       disabled={isValidCode || isTimerRunning || pendingEmail}
                       disableElevation
                     >
-                      {pendingEmail ? "확인중..." : "이메일 인증"}
+                      이메일 인증
                     </Button>
                   </InputAdornment>
                 }
@@ -288,7 +285,7 @@ export default function SignUpForm() {
                         disabled={isValidCode || pendingCode || isExpiredCode}
                         disableElevation
                       >
-                        {pendingCode ? "확인중..." : "인증하기"}
+                        인증하기
                       </Button>
                     </InputAdornment>
                   }
@@ -352,28 +349,36 @@ export default function SignUpForm() {
           </div>
           <div>
             <FormControlLabel
-              label="모두 동의합니다."
+              label="필수 이용약관에 모두 동의합니다."
               control={
                 <Checkbox checked={isChecked.tos && isChecked.pp} onChange={(e) => handleCheckbox(e, "tos", "pp")} />
               }
             />
             <div className="flex justify-between">
               <FormControlLabel
-                label="서비스 이용약관에 동의합니다. (필수)"
+                label={
+                  <span>
+                    <Link href="/terms" target="_blank" className="py-2 underline">
+                      서비스 이용약관
+                    </Link>
+                    에 동의합니다. (필수)
+                  </span>
+                }
                 control={<Checkbox name="tos" checked={isChecked.tos} onChange={(e) => handleCheckbox(e, "tos")} />}
               />
-              <span className="p-2 underline cursor-pointer" onClick={() => setIsShowingTos(true)}>
-                펼쳐보기
-              </span>
             </div>
             <div className="flex justify-between place-items-center">
               <FormControlLabel
-                label="개인정보 처리방침에 동의합니다. (필수)"
+                label={
+                  <span>
+                    <Link href="/privacy" target="_blank" className="py-2 underline">
+                      개인정보 처리방침
+                    </Link>
+                    에 동의합니다. (필수)
+                  </span>
+                }
                 control={<Checkbox name="pp" checked={isChecked.pp} onChange={(e) => handleCheckbox(e, "pp")} />}
               />
-              <span className="p-2 underline cursor-pointer" onClick={() => setIsShowingPp(true)}>
-                펼쳐보기
-              </span>
             </div>
             {formError.agreements && <FormHelperText error>{formError.agreements[0]}</FormHelperText>}
             {formError.unknown && <FormHelperText error>{formError.unknown[0]}</FormHelperText>}
@@ -383,8 +388,6 @@ export default function SignUpForm() {
           </Button>
         </form>
       </div>
-      <ServiceTermsModal isShowing={isShowingTos} closeModal={() => setIsShowingTos(false)} />
-      <PrivacyPolicyModal isShowing={isShowingPp} closeModal={() => setIsShowingPp(false)} />
     </>
   );
 }

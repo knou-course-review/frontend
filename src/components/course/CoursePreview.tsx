@@ -22,7 +22,7 @@ export default function CoursePreview({
 }: CoursePreviewProps) {
   return (
     <Link href={`/courses/${id}`} className="w-full">
-      <div className="flex h-40 p-4 sm:p-6 justify-between rounded-2xl border border-neutral-400 hover:border-sky-400">
+      <div className="flex h-40 p-4 sm:p-6 justify-between rounded-2xl border border-[#aab9e3] dark:bg-[#1d2945] dark:border-slate-600 hover:border-[#20c1f5]">
         <div className="flex flex-col justify-between">
           <h1 className="mb-3 text-xl sm:text-2xl font-semibold">{courseName}</h1>
           <span>{departmentName}</span>
@@ -32,7 +32,7 @@ export default function CoursePreview({
           </span>
         </div>
         <div className="flex flex-col justify-between items-end">
-          <Label text={classification} background="bg-neutral-400" display="inline-block" />
+          <Label text={classification} background="bg-[#1b60c6]" display="inline-block" />
           <div>상세 보기</div>
         </div>
       </div>

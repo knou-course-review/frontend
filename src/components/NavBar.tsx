@@ -5,7 +5,7 @@ import { getSession } from "@/lib/auth";
 export default async function NavBar() {
   const userSession = await getSession();
   return (
-    <div className="flex h-16 sm:h-24 p-4 sm:p-8 justify-items-center items-center border-b border-b-slate-400 dark:border-b-slate-500">
+    <div className="flex h-16 sm:h-24 p-4 sm:p-8 justify-items-center items-center bg-[#1c3d8d] dark:bg-[#1e2e55] text-white dark:text-slate-200">
       <div>
         <Link href="/" className="orange-link">
           KNOU

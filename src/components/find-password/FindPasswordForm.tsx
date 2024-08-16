@@ -286,7 +286,7 @@ export default function FindPasswordForm() {
                     disabled={isTimerRunning || pendingCode}
                     disableElevation
                   >
-                    {pendingCode ? "발송중..." : isExpiredCode ? "재발송" : "인증번호 발송"}
+                    {isExpiredCode ? "재발송" : "인증번호 발송"}
                   </Button>
                 </InputAdornment>
               }
@@ -305,7 +305,7 @@ export default function FindPasswordForm() {
           disabled={!isTimerRunning || pending}
           disableElevation
         >
-          {pending ? "..." : "계정 인증"}
+          계정 인증
         </Button>
       </form>
     </div>

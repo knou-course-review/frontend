@@ -34,7 +34,7 @@ export default function EditReviewForm({ courseId, oldContent, closeModal, refre
   };
 
   return (
-    <form className="flex flex-col gap-4 w-full h-fit" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-2 w-full h-fit" onSubmit={handleSubmit}>
       <TextField defaultValue={oldContent} name="content" multiline minRows={4} maxRows={10} />
       <div className="self-end">
         <Button onClick={closeModal}>취소</Button>{" "}

@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import Snackbar from "@mui/material/Snackbar";
 import NewReviewForm from "./NewReviewForm";
 import PageNavigator from "../PageNavigator";
 import UserReview from "./UserReview";
@@ -25,6 +27,7 @@ const fetchAllReviews = (page = 1, courseId: string) =>
   fetch(`/api/reviews?cid=${courseId}&page=${page}`).then((res) => res.json());
 
 export default function CourseReviewContainer({ courseId }: CourseReviewContainerProps) {
+  const [snackbar, setSnackbar] = useState({ isOpen: false, msg: "" });
   const [page, setPage] = useState(1);
   const { data, error, refetch } = useQuery({
     queryKey: ["all-reviews", page, courseId],
@@ -39,6 +42,8 @@ export default function CourseReviewContainer({ courseId }: CourseReviewContaine
       setPage(data.totalPages - 1);
     } else refreshData();
   };
+  const closeSnackbar = () => setSnackbar({ isOpen: false, msg: "" });
+  const openSnackbar = (msg: string) => setSnackbar({ isOpen: true, msg });
 
   if (error) return <div className="text-center">오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>;
   return (
@@ -46,15 +51,22 @@ export default function CourseReviewContainer({ courseId }: CourseReviewContaine
       <div>
         <NewReviewForm courseId={courseId} refreshData={refreshData} />
       </div>
-      <div className="flex justify-between mt-8">
-        <h1 className="font-bold text-lg">수강생 리뷰</h1>
+      <div className="mt-8">
+        <Image src="/header-bar.svg" width={42} height={6} alt="수강생 리뷰 구간 표식" />
+        <h1 className="mt-2 font-bold text-lg">수강생 리뷰</h1>
       </div>
       <div className="flex flex-col gap-4">
         {data ? (
-          data.content.length > 0 ? (
+          data.content?.length > 0 ? (
             <>
               {data.content.map((review: UserReviewData) => (
-                <UserReview key={review.id} {...review} refreshData={refreshData} handleLastPage={handleLastPage} />
+                <UserReview
+                  key={review.id}
+                  {...review}
+                  refreshData={refreshData}
+                  handleLastPage={handleLastPage}
+                  openSnackbar={openSnackbar}
+                />
               ))}
               <PageNavigator
                 currentPage={data.pageNumber}
@@ -69,6 +81,13 @@ export default function CourseReviewContainer({ courseId }: CourseReviewContaine
           Array.from({ length: 10 }, () => <UserReviewSkeleton />)
         )}
       </div>
+      <Snackbar
+        message={snackbar.msg}
+        autoHideDuration={2000}
+        open={snackbar.isOpen}
+        onClose={closeSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      />
     </>
   );
 }
