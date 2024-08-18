@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
-import { IconButton } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 
 type PageNavigatorProps = {
   currentPage: number;
@@ -12,8 +12,8 @@ type PageNavigatorProps = {
 };
 
 const commonClasses = "text-center w-8 h-8 leading-8 rounded-[50px]";
-const disabledClasses = "bg-slate-300 cursor-default";
-const activeClasses = "bg-transparent cursor-pointer hover:bg-sky-300";
+const disabledClasses = "bg-slate-300 cursor-default dark:[color:rgb(52,52,52)]";
+const activeClasses = "bg-transparent cursor-pointer hover:bg-sky-300 dark:hover:[color:rgb(52,52,52)]";
 
 const getButtonArray = (totalBatches: number, currentBatch: number, totalPages: number) =>
   Array.from({ length: currentBatch < totalBatches ? 5 : totalPages % 5 }, (_, i) => i + (currentBatch - 1) * 5 + 1);
@@ -27,7 +27,7 @@ export default function PageNavigator({ currentPage, pages, handlePageSelect }: 
     handlePageSelect(buttons[0]);
   }, [currentBatch]);
 
-  const handleClick = (e: MouseEvent) => {
+  const handleClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLDivElement;
     const nextPage = Number(target.textContent);
     handlePageSelect(nextPage);

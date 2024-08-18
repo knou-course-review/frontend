@@ -2,22 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import Delete from "@mui/icons-material/Delete";
-import Edit from "@mui/icons-material/Edit";
+import ThumbUpAlt from "@mui/icons-material/ThumbUpAlt";
+import ThumbUpOffAlt from "@mui/icons-material/ThumbUpOffAlt";
 import Warning from "@mui/icons-material/Warning";
-import DeleteReviewModal from "../DeleteReviewModal";
-import EditReviewForm from "./EditReviewForm";
 import UserReportModal from "../UserReportModal";
+import { cancelLike, likeReview } from "@/actions/like-review";
+import type { UserReviewData } from "./CourseReviewContainer";
 
-type UserReviewProps = {
-  id: number;
-  userId: number;
-  username: string;
-  content: string;
-  createdAt: string;
-  owner: boolean;
+type UserReviewProps = UserReviewData & {
   refreshData: () => void;
-  handleLastPage: () => void;
   openSnackbar: (msg: string) => void;
 };
 
@@ -33,15 +26,14 @@ export default function UserReview({
   content,
   createdAt,
   owner,
-  refreshData,
-  handleLastPage,
+  likeStatus,
   openSnackbar,
+  refreshData,
 }: UserReviewProps) {
   const contentElem = useRef<HTMLParagraphElement | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isExpandable, setIsExpandable] = useState(false);
   const [isShowing, setIsShowing] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (!contentElem.current) return;
@@ -55,9 +47,15 @@ export default function UserReview({
   };
   const openModal = () => setIsShowing(true);
   const closeModal = () => setIsShowing(false);
-  const toggleEditMode = () => {
-    setIsEditing(!isEditing);
-    setIsCollapsed(!isCollapsed);
+  const handleReviewLike = async () => {
+    const res = await likeReview(id.toString());
+    if (res.isValid) refreshData();
+    else openSnackbar("오류가 발생했습니다.");
+  };
+  const handleReviewCancel = async () => {
+    const res = await cancelLike(id.toString());
+    if (res.isValid) refreshData();
+    else openSnackbar("오류가 발생했습니다.");
   };
 
   return (
@@ -70,42 +68,26 @@ export default function UserReview({
             <AccountCircle fontSize="small" /> {username} <br />
             <span className="text-sm text-slate-400">{extractDate(createdAt)}</span>
           </div>
-          {owner ? (
-            <div className="self-start">
-              <Edit className="cursor-pointer" onClick={toggleEditMode} />{" "}
-              <Delete className="cursor-pointer" onClick={() => openModal()} />
-            </div>
-          ) : (
-            <Warning className="self-start cursor-pointer" onClick={() => openModal()} />
-          )}
+          <div className="flex justify-end">
+            {likeStatus.isLike ? (
+              <ThumbUpAlt className="cursor-pointer" fontSize="small" onClick={handleReviewCancel} />
+            ) : (
+              <ThumbUpOffAlt className="cursor-pointer" fontSize="small" onClick={handleReviewLike} />
+            )}
+            <div className="ml-1 leading-5">{likeStatus.likeCount.toLocaleString("ko-KR")}</div>
+            {!owner && <Warning className="ml-4 cursor-pointer" fontSize="small" onClick={() => openModal()} />}
+          </div>
         </div>
         <div className={`relative mt-4 whitespace-pre-line overflow-hidden ${isCollapsed && "max-h-[120px]"}`}>
-          {isEditing ? (
-            <EditReviewForm
-              courseId={id.toString()}
-              oldContent={content}
-              closeModal={toggleEditMode}
-              refreshData={refreshData}
-            />
-          ) : (
-            <p ref={contentElem}>{content}</p>
-          )}
+          <p ref={contentElem}>{content}</p>
         </div>
-        {isExpandable && !isEditing && (
+        {isExpandable && (
           <div onClick={handleExpand}>
             ... <span className="text-cyan-600 cursor-pointer">더보기</span>
           </div>
         )}
       </div>
-      {owner ? (
-        <DeleteReviewModal
-          isShowing={isShowing}
-          reviewId={id}
-          closeModal={closeModal}
-          handleLastPage={handleLastPage}
-          openSnackbar={openSnackbar}
-        />
-      ) : (
+      {!owner && (
         <UserReportModal
           isShowing={isShowing}
           reviewId={id}
