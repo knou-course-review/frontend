@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export type AuthContextState = {
   session: SessionState;
@@ -14,22 +14,28 @@ export type SessionState = {
 
 export const AuthContext = createContext<AuthContextState>({ session: { isLoggedIn: false }, updateSession: () => {} });
 
+const getSession = async () => {
+  const res = await fetch("/api/session");
+  const session = await res.json();
+  return session;
+};
+
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const [session, setSession] = useState<SessionState>({ isLoggedIn: false });
 
   useEffect(() => {
     const getExistingSession = async () => {
-      const res = await fetch("/api/session");
-      const session = await res.json();
+      const session = await getSession();
       if (session.isLoggedIn) {
         setSession({ isLoggedIn: true });
       }
     };
     const checkSession = async () => {
       if (document.visibilityState !== "visible") return;
-      const res = await fetch("/api/session");
-      const session = await res.json();
+      const session = await getSession();
       if (!session.isLoggedIn) {
         setSession({ isLoggedIn: false });
         router.refresh();
@@ -40,6 +46,17 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     window.addEventListener("visibilitychange", checkSession);
     return () => window.removeEventListener("visibilitychange", checkSession);
   }, []);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const session = await getSession();
+      if (!session.isLoggedIn) {
+        setSession({ isLoggedIn: false });
+      }
+    };
+
+    checkSession();
+  }, [pathname, searchParams]);
 
   const updateSession = (sessionData: SessionState) => setSession(sessionData);
 

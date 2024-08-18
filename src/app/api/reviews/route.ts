@@ -28,6 +28,7 @@ export async function GET(req: NextRequest) {
       const res = await api.get(`/api/v2/course/${courseIdQuery}/reviews?page=${pageQuery}`, userSession.token);
       if (res.status === 200) {
         const pageBody = await res.json();
+        if (pageBody.data.content.length === 0) return NextResponse.json({ ...pageBody.data, likes: [] });
         const reviewIds = pageBody.data.content.map((item: any) => item.id);
         const likesQuery = reviewIds.map((id: number) => "reviewIds=" + id.toString()).join("&");
         const likesRes = await api.get(`/api/v1/likes?${likesQuery}`, userSession.token);

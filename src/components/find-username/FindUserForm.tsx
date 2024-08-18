@@ -103,12 +103,14 @@ export default function FindUserForm() {
 
   if (account)
     return (
-      <div className="flex flex-col pt-8 gap-8 w-full">
+      <div className="flex flex-col w-full pt-8 gap-8 items-center text-center">
         <p>
-          회원님의 아이디는 <strong>{account}</strong> 입니다.
+          회원님의 아이디는
+          <br />
+          <strong>{account}</strong> 입니다.
         </p>
         <Link href="/login">
-          <Button variant="contained" disableElevation>
+          <Button className="w-36" variant="contained" disableElevation>
             로그인
           </Button>
         </Link>
@@ -116,7 +118,7 @@ export default function FindUserForm() {
     );
   return (
     <div>
-      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col w-[93dvw] sm:w-full gap-4">
         <div>
           <FormControl variant="outlined" fullWidth>
             <InputLabel error={formData.email.error}>이메일</InputLabel>

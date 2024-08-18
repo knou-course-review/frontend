@@ -157,10 +157,10 @@ export default function FindPasswordForm() {
 
   if (changedPassword)
     return (
-      <div className="flex flex-col pt-8 gap-8 w-full">
-        <p className="text-center">비밀번호를 변경했습니다.</p>
+      <div className="flex flex-col w-full pt-8 gap-8 items-center text-center">
+        <p>비밀번호를 변경했습니다.</p>
         <Link href="/login">
-          <Button variant="contained" disableElevation>
+          <Button className="w-36" variant="contained" disableElevation>
             로그인
           </Button>
         </Link>
@@ -169,7 +169,7 @@ export default function FindPasswordForm() {
   if (isValidAccount)
     return (
       <div>
-        <form onSubmit={handlePasswordChange} className="w-full flex flex-col gap-4">
+        <form onSubmit={handlePasswordChange} className="flex flex-col w-[93dvw] sm:w-full gap-4">
           <p className="text-center">새 비밀번호를 설정해 주세요.</p>
           <div>
             <FormControl variant="outlined" fullWidth>
@@ -221,7 +221,7 @@ export default function FindPasswordForm() {
     );
   return (
     <div>
-      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col w-[93dvw] sm:w-full gap-4">
         <div>
           <FormControl variant="outlined" fullWidth>
             <InputLabel error={formData.username.error}>아이디</InputLabel>
