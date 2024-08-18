@@ -41,7 +41,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     return () => window.removeEventListener("visibilitychange", checkSession);
   }, []);
 
-  const updateSession = (sessionData: SessionState) => setSession((prev) => ({ ...prev, sessionData }));
+  const updateSession = (sessionData: SessionState) => setSession((prev) => ({ ...prev, session: sessionData }));
 
   return (
     <AuthContext.Provider value={{ session: { isLoggedIn: session.isLoggedIn }, updateSession }}>
