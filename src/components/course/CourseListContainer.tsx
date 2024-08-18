@@ -23,7 +23,7 @@ export default function CourseListContainer() {
     <div className="flex flex-col gap-4">
       {data
         ? data.content.map((course: CoursePreviewProps) => <CoursePreview key={course.id} {...course} />)
-        : Array.from({ length: 10 }, () => <CoursePreviewSkeleton />)}
+        : Array.from({ length: 10 }, (_, i) => <CoursePreviewSkeleton key={i} />)}
       {data && (
         <PageNavigator currentPage={data.pageNumber} pages={data.totalPages} handlePageSelect={handlePageSelect} />
       )}

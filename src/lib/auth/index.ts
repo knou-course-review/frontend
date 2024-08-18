@@ -17,7 +17,7 @@ type SessionPayload = {
 
 const cookieOptions = {
   name: "knous",
-  duration: 24 * 60 * 60 * 1000,
+  duration: 60 * 60 * 1000,
 };
 
 export async function encrypt(payload: SessionPayload) {

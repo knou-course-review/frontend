@@ -1,36 +1,51 @@
 "use client";
 
-import { type ReactNode, useState, createContext, useEffect } from "react";
-
-export type AuthContextProps = AuthContextState | null;
+import { useRouter } from "next/navigation";
+import { createContext, useEffect, useState } from "react";
 
 export type AuthContextState = {
-  session: SessionUser | null;
-  updateSession: (sessionData: SessionUser) => void;
+  session: SessionState;
+  updateSession: (sessionData: SessionState) => void;
 };
 
-export type SessionUser = {
-  username: string;
-  token: string;
+export type SessionState = {
+  isLoggedIn: boolean;
 };
 
-export const AuthContext = createContext<AuthContextProps>(null);
+export const AuthContext = createContext<AuthContextState>({ session: { isLoggedIn: false }, updateSession: () => {} });
 
-export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-  const [session, setSession] = useState<SessionUser | null>(null);
+export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
+  const [session, setSession] = useState<SessionState>({ isLoggedIn: false });
 
   useEffect(() => {
     const getExistingSession = async () => {
-      const res = await fetch("/api/check-session");
-      const user = await res.json();
-      if (user.isLoggedIn && user.payload) {
-        // fetch username
-        setSession({ username: "temp", token: user.token });
+      const res = await fetch("/api/session");
+      const session = await res.json();
+      if (session.isLoggedIn) {
+        setSession({ isLoggedIn: true });
       }
     };
+    const checkSession = async () => {
+      if (document.visibilityState !== "visible") return;
+      const res = await fetch("/api/session");
+      const session = await res.json();
+      if (!session.isLoggedIn) {
+        setSession({ isLoggedIn: false });
+        router.refresh();
+      }
+    };
+
     getExistingSession();
+    window.addEventListener("visibilitychange", checkSession);
+    return () => window.removeEventListener("visibilitychange", checkSession);
   }, []);
 
-  const updateSession = (sessionData: SessionUser) => setSession(sessionData);
-  return <AuthContext.Provider value={{ session, updateSession }}>{children}</AuthContext.Provider>;
+  const updateSession = (sessionData: SessionState) => setSession((prev) => ({ ...prev, sessionData }));
+
+  return (
+    <AuthContext.Provider value={{ session: { isLoggedIn: session.isLoggedIn }, updateSession }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

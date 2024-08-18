@@ -6,6 +6,7 @@ import Cancel from "@mui/icons-material/Cancel";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Button, FormHelperText, IconButton, TextField } from "@mui/material";
+import { useAuthContext } from "@/hooks/useAuthContext";
 import useForm from "@/hooks/useForm";
 import { login } from "@/actions/login";
 
@@ -15,6 +16,7 @@ export default function LoginForm() {
   const [isCredentialError, setIsCredentialError] = useState(false);
   const [pending, setPending] = useState(false);
   const router = useRouter();
+  const { updateSession } = useAuthContext();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -35,6 +37,7 @@ export default function LoginForm() {
     };
     const res = await login(loginCredentials);
     if (res?.isValid) {
+      updateSession({ isLoggedIn: true });
       return router.push("/");
     } else if (res?.errors) {
       updateFormData("username", formData.username.value, true, res?.errors.username && res?.errors.username[0]);

@@ -78,7 +78,7 @@ export default function CourseReviewContainer({ courseId }: CourseReviewContaine
             <div className="w-full text-center">수강생 리뷰가 없는 강의입니다.</div>
           )
         ) : (
-          Array.from({ length: 10 }, () => <UserReviewSkeleton />)
+          Array.from({ length: 10 }, (_, i) => <UserReviewSkeleton key={i} />)
         )}
       </div>
       <Snackbar

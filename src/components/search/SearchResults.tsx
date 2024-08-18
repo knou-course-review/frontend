@@ -40,7 +40,7 @@ export default function SearchResults({ searchType, name }: CourseSearchParams) 
           <NoResults />
         )
       ) : (
-        Array.from({ length: 10 }, () => <CoursePreviewSkeleton />)
+        Array.from({ length: 10 }, (_, i) => <CoursePreviewSkeleton key={i} />)
       )}
     </div>
   );
