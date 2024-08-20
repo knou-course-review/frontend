@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { AuthContextProvider } from "./auth/AuthContextProvider";
 import { DraftContextProvider } from "./draft/DraftContextProvider";
 import TanstackQueryProvider from "./tanstack/TanstackQueryProvider";
@@ -7,9 +8,11 @@ export default function ContextProviders({ children }: { children: React.ReactNo
   return (
     <ThemeContextProvider>
       <TanstackQueryProvider>
-        <AuthContextProvider>
-        <DraftContextProvider>{children}</DraftContextProvider>
-        </AuthContextProvider>
+        <Suspense>
+          <AuthContextProvider>
+            <DraftContextProvider>{children}</DraftContextProvider>
+          </AuthContextProvider>
+        </Suspense>
       </TanstackQueryProvider>
     </ThemeContextProvider>
   );
