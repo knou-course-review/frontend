@@ -1,18 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import LogoutButton from "./LogoutButton";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
 export default function NavBar() {
   const { session } = useAuthContext();
   return (
-    <div className="flex h-16 sm:h-24 p-4 sm:p-8 justify-items-center items-center bg-[#1c3d8d] dark:bg-[#1e2e55] text-white dark:text-slate-200">
-      <div>
-        <Link href="/" className="orange-link">
-          KNOU
-        </Link>
-      </div>
+    <div className="flex h-16 sm:h-24 px-4 sm:px-8 justify-items-center items-center bg-[#1c3d8d] dark:bg-[#1e2e55] text-white dark:text-slate-200">
+      <Link href="/">
+        <Image src="/logo480x480.svg" width={32} height={32} alt="KNOU 로고" />
+      </Link>
       <div className="flex gap-7 ml-auto list-none">
         {session.isLoggedIn ? (
           <>
