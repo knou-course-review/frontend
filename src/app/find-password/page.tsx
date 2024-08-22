@@ -1,5 +1,5 @@
 import FindPasswordForm from "@/components/find-password/FindPasswordForm";
-import LostCredentialsNav from "@/components/LostCredentialsNav";
+import LostCredentialsNav from "@/components/nav/LostCredentialsNav";
 
 export default function FindPassword() {
   return (

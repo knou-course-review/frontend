@@ -1,11 +1,11 @@
 import Divider from "@mui/material/Divider";
-import NavBackTab from "@/components/account/NavBackTab";
+import NavBackButton from "@/components/nav/NavBackButton";
 import TerminationForm from "@/components/account/TerminationForm";
 
 export default function TerminateAccount() {
   return (
     <div className="flex flex-col">
-      <NavBackTab />
+      <NavBackButton className="lg:hidden border-b border-[#aab9e3] dark:border-slate-600" url="/account" />
       <div className="min-h-[500px] w-[90dvw] lg:w-[800px] lg:p-8 my-10 lg:my-0 lg:rounded-2xl lg:border lg:border-[#aab9e3] lg:dark:border-slate-600 lg:dark:bg-[#1d2945]">
         <h1 className="text-2xl font-bold">회원 탈퇴</h1>
         <Divider sx={{ padding: "0.5rem" }} />

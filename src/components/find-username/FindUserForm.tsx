@@ -12,7 +12,7 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import ConfirmationTimer from "../forms/ConfirmationTimer";
+import CountdownTimer from "../common/CountdownTimer";
 import useForm from "@/hooks/useForm";
 import { checkCode, getUsername, sendCode } from "@/actions/lost-credentials";
 import { NUMBER_REGEX } from "@/utils/regex";
@@ -153,7 +153,7 @@ export default function FindUserForm() {
               onChange={handleInput}
               endAdornment={
                 <InputAdornment position="end" className="flex gap-3">
-                  {isTimerRunning && <ConfirmationTimer endTimer={endTimer} />}
+                  {isTimerRunning && <CountdownTimer endTimer={endTimer} />}
                   <Button
                     variant="contained"
                     size="small"

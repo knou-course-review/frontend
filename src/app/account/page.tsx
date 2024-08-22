@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Divider from "@mui/material/Divider";
 import AccountInfoForm from "@/components/account/AccountInfoForm";
-import NavTabs from "@/components/account/NavTabs";
+import NavTabs from "@/components/nav/NavTabs";
 
 export default function MyAccount() {
   return (

@@ -1,6 +1,6 @@
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import Footer from "@/components/Footer";
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/nav/NavBar";
 import ContextProviders from "@/contexts";
 import { noto_sans_kr } from "@/constants/next-font";
 import type { Metadata } from "next";

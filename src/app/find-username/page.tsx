@@ -1,5 +1,5 @@
 import FindUserForm from "@/components/find-username/FindUserForm";
-import LostCredentialsNav from "@/components/LostCredentialsNav";
+import LostCredentialsNav from "@/components/nav/LostCredentialsNav";
 
 export default function FindUsername() {
   return (
