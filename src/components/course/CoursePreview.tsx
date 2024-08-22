@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Label from "../Label";
+import Label from "../common/Label";
 
 export type CoursePreviewProps = {
   id: number;

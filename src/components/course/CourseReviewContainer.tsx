@@ -4,9 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Snackbar from "@mui/material/Snackbar";
-import NewReviewForm from "./NewReviewForm";
-import PageNavigator from "../PageNavigator";
-import UserReview from "./UserReview";
+import NewReviewForm from "../reviews/NewReviewForm";
+import PageNavigator from "../common/PageNavigator";
+import UserReview from "../reviews/UserReview";
 import UserReviewSkeleton from "../reviews/UserReviewSkeleton";
 
 type ReviewLikes = {

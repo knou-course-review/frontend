@@ -4,7 +4,7 @@ import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import CoursePreview, { type CoursePreviewProps } from "./CoursePreview";
 import CoursePreviewSkeleton from "./CoursePreviewSkeleton";
-import PageNavigator from "../PageNavigator";
+import PageNavigator from "../common/PageNavigator";
 
 const fetchAllCourses = (page = 1) => fetch(`/api/courses?page=${page}`).then((res) => res.json());
 

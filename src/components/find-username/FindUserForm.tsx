@@ -12,7 +12,7 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import ConfirmationTimer from "../ConfirmationTimer";
+import ConfirmationTimer from "../forms/ConfirmationTimer";
 import useForm from "@/hooks/useForm";
 import { checkCode, getUsername, sendCode } from "@/actions/lost-credentials";
 import { NUMBER_REGEX } from "@/utils/regex";

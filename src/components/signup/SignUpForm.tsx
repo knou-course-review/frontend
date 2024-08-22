@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import ConfirmationTimer from "../ConfirmationTimer";
+import ConfirmationTimer from "../forms/ConfirmationTimer";
 import WelcomeMessage from "./WelcomeMessage";
 import useForm from "@/hooks/useForm";
 import { checkCode, checkEmail, checkUsername, sendCode, signup } from "@/actions/signup";

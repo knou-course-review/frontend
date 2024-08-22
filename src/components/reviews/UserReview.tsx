@@ -5,9 +5,9 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import ThumbUpAlt from "@mui/icons-material/ThumbUpAlt";
 import ThumbUpOffAlt from "@mui/icons-material/ThumbUpOffAlt";
 import Warning from "@mui/icons-material/Warning";
-import UserReportModal from "../UserReportModal";
+import UserReportModal from "../modals/UserReportModal";
 import { cancelLike, likeReview } from "@/actions/like-review";
-import type { UserReviewData } from "./CourseReviewContainer";
+import type { UserReviewData } from "../course/CourseReviewContainer";
 
 type UserReviewProps = UserReviewData & {
   refreshData: () => void;

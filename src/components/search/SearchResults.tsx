@@ -5,7 +5,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import CoursePreview, { type CoursePreviewProps } from "../course/CoursePreview";
 import CoursePreviewSkeleton from "../course/CoursePreviewSkeleton";
 import NoResults from "./NoResults";
-import PageNavigator from "../PageNavigator";
+import PageNavigator from "../common/PageNavigator";
 import type { CourseSearchParams } from "@/app/search/page";
 
 const fetchCourses = (page = 1, params: CourseSearchParams) =>
