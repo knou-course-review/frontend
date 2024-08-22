@@ -5,16 +5,21 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import PasswordChangeForm from "./PasswordChangeForm";
 
-export default function AccountInfoForm() {
+type AccountInfoFormProps = {
+  username: string;
+  email: string;
+};
+
+export default function AccountInfoForm({ username, email }: AccountInfoFormProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const handleClick = () => setIsExpanded(true);
   return (
     <div className="flex flex-col sm:max-w-[400px] my-4">
       <div className="grid grid-cols-1 min-[375px]:grid-cols-[auto,1fr] mb-2 gap-2 items-center">
         <p className="w-16">아이디</p>
-        <TextField value={"eflekjf"} size="small" disabled />
+        <TextField value={username} size="small" disabled />
         <p>이메일</p>
-        <TextField value={"dlfkjas@knou.ac.kr"} size="small" disabled />
+        <TextField value={email} size="small" disabled />
       </div>
       {isExpanded && <PasswordChangeForm />}
       {!isExpanded && (
