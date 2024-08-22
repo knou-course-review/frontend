@@ -11,7 +11,7 @@ export default function MyAccount() {
         <h1 className="text-2xl font-bold">내 정보 수정</h1>
         <Divider sx={{ padding: "0.5rem" }} />
         <AccountInfoForm />
-        <div className="text-right text-rose-600 dark:text-[#ff5d65]">
+        <div className="mt-10 text-right text-rose-600 dark:text-[#ff5d65]">
           <Link href="/account/terminate">회원 탈퇴</Link>
         </div>
       </div>
