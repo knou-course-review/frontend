@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export type AuthContextState = {
   session: SessionState;
+  isLoading: boolean;
   updateSession: (sessionData: SessionState) => void;
 };
 
@@ -12,7 +13,11 @@ export type SessionState = {
   isLoggedIn: boolean;
 };
 
-export const AuthContext = createContext<AuthContextState>({ session: { isLoggedIn: false }, updateSession: () => {} });
+export const AuthContext = createContext<AuthContextState>({
+  session: { isLoggedIn: false },
+  isLoading: true,
+  updateSession: () => {},
+});
 
 const getSession = async () => {
   const res = await fetch("/api/session");
@@ -21,6 +26,7 @@ const getSession = async () => {
 };
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -43,6 +49,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     };
 
     getExistingSession();
+    setIsLoading(false);
     window.addEventListener("visibilitychange", checkSession);
     return () => window.removeEventListener("visibilitychange", checkSession);
   }, []);
@@ -60,5 +67,5 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
 
   const updateSession = (sessionData: SessionState) => setSession(sessionData);
 
-  return <AuthContext.Provider value={{ session, updateSession }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ session, isLoading, updateSession }}>{children}</AuthContext.Provider>;
 };

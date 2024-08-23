@@ -6,7 +6,15 @@ import LogoutButton from "./LogoutButton";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
 export default function NavBar() {
-  const { session } = useAuthContext();
+  const { session, isLoading } = useAuthContext();
+  if (isLoading)
+    return (
+      <div className="flex h-16 sm:h-24 px-4 sm:px-8 justify-items-center items-center bg-[#1c3d8d] dark:bg-[#1e2e55] text-white dark:text-slate-200">
+        <Link href="/" className="mr-auto">
+          <Image src="/logo480x480.svg" width={32} height={32} alt="KNOU 로고" />
+        </Link>
+      </div>
+    );
   return (
     <div className="flex h-16 sm:h-24 px-4 sm:px-8 justify-items-center items-center bg-[#1c3d8d] dark:bg-[#1e2e55] text-white dark:text-slate-200">
       <Link href="/">
