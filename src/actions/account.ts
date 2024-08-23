@@ -34,7 +34,7 @@ export async function changeAccountPassword(data: { nowPassword: string; passwor
       if (res.ok) {
         return { isValid: true };
       } else {
-        return { isValid: false, errors: { wrongPassword: ["* 잘못된 비밀번호입니다."] } };
+        return { isValid: false, errors: { wrongPassword: ["* 기존 비밀번호를 확인해 주세요."] } };
       }
     } catch (e) {
       const isError = ErrorSchema.safeParse(e);

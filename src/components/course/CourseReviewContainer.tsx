@@ -8,6 +8,7 @@ import NewReviewForm from "../reviews/NewReviewForm";
 import PageNavigator from "../common/PageNavigator";
 import UserReview from "../reviews/UserReview";
 import UserReviewSkeleton from "../reviews/UserReviewSkeleton";
+import useSnackbar from "@/hooks/useSnackbar";
 
 type ReviewLikes = {
   reviewId: number;
@@ -42,7 +43,7 @@ const select = (data: any) => {
 };
 
 export default function CourseReviewContainer({ courseId }: CourseReviewContainerProps) {
-  const [snackbar, setSnackbar] = useState({ isOpen: false, msg: "" });
+  const { snackbar, closeSnackbar, openSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
   const { data, error, refetch } = useQuery({
     queryKey: ["all-reviews", page, courseId],
@@ -53,8 +54,6 @@ export default function CourseReviewContainer({ courseId }: CourseReviewContaine
 
   const handlePageSelect = (value: number) => setPage(value);
   const refreshData = () => refetch();
-  const closeSnackbar = () => setSnackbar({ isOpen: false, msg: "" });
-  const openSnackbar = (msg: string) => setSnackbar({ isOpen: true, msg });
 
   if (error) return <div className="text-center">오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>;
   return (

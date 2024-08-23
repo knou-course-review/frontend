@@ -1,7 +1,7 @@
 "use client";
 
 import { logout } from "@/actions/logout";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import useAuthContext from "@/hooks/useAuthContext";
 
 export default function LogoutButton() {
   const { updateSession } = useAuthContext();

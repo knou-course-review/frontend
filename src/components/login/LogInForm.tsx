@@ -6,7 +6,7 @@ import Cancel from "@mui/icons-material/Cancel";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Button, FormHelperText, IconButton, TextField } from "@mui/material";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import useAuthContext from "@/hooks/useAuthContext";
 import useForm from "@/hooks/useForm";
 import { login } from "@/actions/login";
 

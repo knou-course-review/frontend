@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import LogoutButton from "./LogoutButton";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import useAuthContext from "@/hooks/useAuthContext";
 
 export default function NavBar() {
   const { session, isLoading } = useAuthContext();

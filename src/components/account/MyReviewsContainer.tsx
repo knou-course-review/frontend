@@ -6,6 +6,7 @@ import Snackbar from "@mui/material/Snackbar";
 import OwnerReview from "../reviews/OwnerReview";
 import OwnerReviewSkeleton from "../reviews/OwnerReviewSkeleton";
 import PageNavigator from "../common/PageNavigator";
+import useSnackbar from "@/hooks/useSnackbar";
 
 type MyReviewData = {
   id: number;
@@ -18,7 +19,7 @@ type MyReviewData = {
 const fetchMyReviews = (page = 1) => fetch(`/api/account/reviews?page=${page}`).then((res) => res.json());
 
 export default function MyReviewsContainer() {
-  const [snackbar, setSnackbar] = useState({ isOpen: false, msg: "" });
+  const { snackbar, closeSnackbar, openSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
   const { data, error, refetch } = useQuery({
     queryKey: ["my-reviews", page],
@@ -33,8 +34,6 @@ export default function MyReviewsContainer() {
       setPage(data.totalPages - 1);
     } else refreshData();
   };
-  const closeSnackbar = () => setSnackbar({ isOpen: false, msg: "" });
-  const openSnackbar = (msg: string) => setSnackbar({ isOpen: true, msg });
 
   if (error) return <div className="text-center">오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>;
   return (

@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import Button from "@mui/material/Button";
+import FormHelperText from "@mui/material/FormHelperText";
 import Snackbar from "@mui/material/Snackbar";
 import TextField from "@mui/material/TextField";
+import useSnackbar from "@/hooks/useSnackbar";
 import { changeAccountPassword } from "@/actions/account";
-import { FormHelperText } from "@mui/material";
 
 export default function PasswordChangeForm() {
-  const [snackbar, setSnackbar] = useState({ isOpen: false, msg: "" });
+  const { snackbar, closeSnackbar, openSnackbar } = useSnackbar();
   const [error, setError] = useState<{ [key: string]: string[] }>({});
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,8 +28,6 @@ export default function PasswordChangeForm() {
       setError(res.errors);
     }
   };
-  const closeSnackbar = () => setSnackbar({ isOpen: false, msg: "" });
-  const openSnackbar = (msg: string) => setSnackbar({ isOpen: true, msg });
   return (
     <>
       <form
