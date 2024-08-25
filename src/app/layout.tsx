@@ -7,8 +7,16 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "KNOU",
-  description: "한국방송통신대학교 강의 후기를 한눈에 볼 수 있는 사이트입니다.",
+  title: "방통대 강의 후기는 노우강!",
+  description: "한국방송통신대학교 강의의 수강 리뷰를 한눈에 볼 수 있는 사이트입니다.",
+  openGraph: {
+    title: "방통대 강의 후기는 노우강!",
+    siteName: "노우강",
+    description: "한국방송통신대학교 강의의 수강 리뷰를 한눈에 볼 수 있는 사이트입니다.",
+    locale: "ko_KR",
+    url: "https://knouk.vercel.app",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

@@ -9,7 +9,7 @@ export default function Footer() {
       <Link href="/privacy" className="orange-link">
         개인정보처리방침
       </Link>
-      <span>문의: 000@gmail.com</span>
+      <span>문의: teamknouk@gmail.com</span>
     </div>
   );
 }

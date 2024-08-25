@@ -1,9 +1,15 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "개인정보처리방침 - 노우강",
+};
+
 export default function PrivacyPolicy() {
   return (
     <article className="my-16 p-8 lg:max-w-[70dvw] lg:p-0">
       <h1 className="mb-8 text-2xl font-bold">개인정보처리방침</h1>
       <p>
-        KNOU 운영팀(이하 '회사')은 개인정보보호법 등 관련 법령에 따라 KNOU 서비스 이용자(이하 '회원')의 개인정보를
+        노우강 운영팀(이하 '회사')은 개인정보보호법 등 관련 법령에 따라 노우강 서비스 이용자(이하 '회원')의 개인정보를
         보호하고 정보주체의 개인정보와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 다음과 같이 개인정보처리방침을
         수립 및 고지하고자 합니다.
       </p>
@@ -20,7 +26,7 @@ export default function PrivacyPolicy() {
         <li className="mt-2 ml-2">
           서비스 제공
           <br />
-          가입한 회원에게 한국방송통신대학교 강의 정보 제공 등 KNOU 서비스를 제공하기 위하여 개인정보를 처리합니다.
+          가입한 회원에게 한국방송통신대학교 강의 정보 제공 등 노우강 서비스를 제공하기 위하여 개인정보를 처리합니다.
         </li>
         <li className="mt-2 ml-2">
           민원사무처리
@@ -36,7 +42,7 @@ export default function PrivacyPolicy() {
       </ol>
 
       <h2 className="mt-6 font-semibold">2. 처리하는 개인정보의 항목 및 보유 기간</h2>
-      <p>회사는 KNOU 서비스 제공을 정보주체의 아래 개인정보를 회원 탈퇴 시까지 보유 및 처리합니다.</p>
+      <p>회사는 노우강 서비스 제공을 정보주체의 아래 개인정보를 회원 탈퇴 시까지 보유 및 처리합니다.</p>
       <ol className="list-decimal list-inside">
         <li className="mt-2 ml-2">
           로그인 ID, 이메일
@@ -140,7 +146,7 @@ export default function PrivacyPolicy() {
         <br />
         성명: 한승아
         <br />
-        연락처: 00hyun_@naver.com
+        연락처: teamknouk@gmail.com
       </p>
       <p className="mt-4">
         개인정보 보호 관련 문의, 불만처리, 피해구제 등에 관한 사항은 개인정보 보호책임자 및 담당부서로 문의하실 수

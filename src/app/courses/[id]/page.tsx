@@ -1,6 +1,24 @@
 import CourseInfo from "@/components/course/CourseInfo";
 import CourseReviewContainer from "@/components/course/CourseReviewContainer";
 import { api } from "@/utils/api";
+import type { Metadata } from "next";
+
+type MetadataProps = {
+  params: { id: string };
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+  const courseId = params.id;
+  const data = await fetchCourse(courseId);
+  return {
+    title: `${data.courseName} 강의 정보 - 노우강`,
+    description: `한국방송통신대학교 ${data.departmentName} ${data.courseName} 수강 후기 몰아보기`,
+    openGraph: {
+      title: `${data.courseName} 강의 정보 - 노우강`,
+      description: `한국방송통신대학교 ${data.departmentName} ${data.courseName} 수강 후기 몰아보기`,
+    },
+  };
+}
 
 async function fetchCourse(id: string) {
   try {

@@ -1,9 +1,15 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "서비스 이용약관 - 노우강",
+};
+
 export default function TermsOfUse() {
   return (
     <article className="my-16 p-8 lg:max-w-[70dvw] lg:p-0">
       <h1 className="mb-8 text-2xl font-bold">서비스 이용약관</h1>
       <h2 className="mt-4 font-semibold">1. 목적</h2>
-      <p>본 이용약관은 KNOU(이하 "사이트")의 서비스의 이용 조건과 운영에 관한 제반 사항 규정을 목적으로 합니다.</p>
+      <p>본 이용약관은 노우강(이하 "사이트")의 서비스의 이용 조건과 운영에 관한 제반 사항 규정을 목적으로 합니다.</p>
 
       <h2 className="mt-4 font-semibold">2. 용어의 정의</h2>
       <p>본 약관에서 사용하는 용어는 다음과 같이 정의됩니다.</p>

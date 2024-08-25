@@ -18,11 +18,11 @@ export default function CourseListContainer() {
 
   const handlePageSelect = (value: number) => setPage(value);
 
-  if (error) return <div className="text-center">오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>;
+  if (error) return <div className="mb-100 text-center">오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>;
   return (
     <div className="flex flex-col gap-4">
       {data
-        ? data.content.map((course: CoursePreviewProps) => <CoursePreview key={course.id} {...course} />)
+        ? data.content?.map((course: CoursePreviewProps) => <CoursePreview key={course.id} {...course} />)
         : Array.from({ length: 10 }, (_, i) => <CoursePreviewSkeleton key={i} />)}
       {data && (
         <PageNavigator currentPage={data.pageNumber} pages={data.totalPages} handlePageSelect={handlePageSelect} />

@@ -1,6 +1,11 @@
+import { Metadata } from "next";
 import Divider from "@mui/material/Divider";
 import MyReviewsContainer from "@/components/account/MyReviewsContainer";
 import NavTabs from "@/components/nav/NavTabs";
+
+export const metadata: Metadata = {
+  title: "내가 쓴 리뷰 - 노우강",
+};
 
 export default function MyReviews() {
   return (

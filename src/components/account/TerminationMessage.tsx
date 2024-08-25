@@ -8,7 +8,7 @@ export default function TerminationMessage() {
       <span className="text-6xl">👋</span>
       회원 탈퇴가 완료되었습니다.
       <br />
-      KNOU를 이용해 주셔서 감사합니다.
+      노우강을 이용해 주셔서 감사합니다.
       <Button variant="contained" className="w-40 self-center" disableElevation>
         <Link href="/">메인화면으로</Link>
       </Button>

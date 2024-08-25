@@ -1,6 +1,11 @@
+import { Metadata } from "next";
 import Divider from "@mui/material/Divider";
 import NavBackButton from "@/components/nav/NavBackButton";
 import TerminationForm from "@/components/account/TerminationForm";
+
+export const metadata: Metadata = {
+  title: "회원 탈퇴 - 노우강",
+};
 
 export default function TerminateAccount() {
   return (
@@ -11,7 +16,7 @@ export default function TerminateAccount() {
         <Divider sx={{ padding: "0.5rem" }} />
         <div className="flex flex-col mt-6 gap-6">
           <p>
-            <strong>KNOU</strong> 서비스에서 탈퇴합니다.
+            <strong>노우강</strong> 서비스에서 탈퇴합니다.
           </p>
           <p>탈퇴한 계정의 계정 정보는 복구 불가하며, 계정과 관련된 다음 정보는 탈퇴 시 삭제 처리됩니다.</p>
           <li className="ml-4">내가 쓴 리뷰</li>

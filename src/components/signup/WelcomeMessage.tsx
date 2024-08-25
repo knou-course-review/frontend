@@ -8,7 +8,7 @@ export default function WelcomeMessage() {
       <span className="text-6xl">🎉</span>
       회원 가입이 완료되었습니다!
       <br />
-      로그인 후 KNOU 서비스를 이용할 수 있습니다.
+      로그인 후 노우강 서비스를 이용할 수 있습니다.
       <Button variant="contained" className="w-40 self-center" disableElevation>
         <Link href="/login">로그인하기</Link>
       </Button>

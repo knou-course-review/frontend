@@ -1,5 +1,10 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import LoginForm from "@/components/login/LogInForm";
+
+export const metadata: Metadata = {
+  title: "로그인 - 노우강",
+};
 
 export default function Login() {
   return (
