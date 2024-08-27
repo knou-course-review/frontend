@@ -11,8 +11,9 @@ import useSnackbar from "@/hooks/useSnackbar";
 type MyReviewData = {
   id: number;
   userId: number;
-  content: string;
   courseId: number;
+  courseName: string;
+  content: string;
   createdAt: string;
 };
 

@@ -10,6 +10,7 @@ import EditReviewForm from "../reviews/EditReviewForm";
 type OwnerReviewProps = {
   id: number;
   courseId: number;
+  courseName: string;
   content: string;
   createdAt: string;
   refreshData: () => void;
@@ -25,6 +26,7 @@ const extractDate = (string: string) => {
 export default function OwnerReview({
   id,
   courseId,
+  courseName,
   content,
   createdAt,
   refreshData,
@@ -47,7 +49,7 @@ export default function OwnerReview({
           <div>
             과목:{" "}
             <Link className="orange-link text-slate-400" href={`/courses/${courseId}`} target="_blank">
-              {"${courseName}"}
+              {courseName}
             </Link>
             <br />
             작성 일자: <span className="text-slate-400">{extractDate(createdAt)}</span>
