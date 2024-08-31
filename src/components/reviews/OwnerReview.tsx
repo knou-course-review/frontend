@@ -56,8 +56,8 @@ export default function OwnerReview({
             <br />
           </div>
           <div className="self-start">
-            <Edit className="cursor-pointer" onClick={toggleEditMode} />{" "}
-            <Delete className="cursor-pointer" onClick={() => openModal()} />
+            <Edit className="cursor-pointer" fontSize="small" onClick={toggleEditMode} />{" "}
+            <Delete className="cursor-pointer" fontSize="small" onClick={() => openModal()} />
           </div>
         </div>
         <div className="relative mt-4">

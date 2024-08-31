@@ -183,7 +183,6 @@ export default function SignUpForm() {
     }
     if (res.errors) {
       setFormError(res.errors);
-      console.log(res.errors);
     }
   };
 
