@@ -22,13 +22,13 @@ const fetchMyReviews = (page = 1) => fetch(`/api/account/reviews?page=${page}`).
 export default function MyReviewsContainer() {
   const { snackbar, closeSnackbar, openSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
-  const { data, error, refetch } = useQuery({
+  const { data, error, refetch, isFetching } = useQuery({
     queryKey: ["my-reviews", page],
     queryFn: () => fetchMyReviews(page),
     placeholderData: keepPreviousData,
   });
 
-  const handlePageSelect = (value: number) => setPage(value);
+  const handlePageSelect = (value = "1") => setPage(Number(value));
   const refreshData = () => refetch();
   const handleLastPage = () => {
     if (data.content.length === 1 && page === data.totalPages) {
@@ -40,29 +40,23 @@ export default function MyReviewsContainer() {
   return (
     <>
       <div className="flex flex-col mt-4 gap-4">
-        {data ? (
-          data.content?.length > 0 ? (
-            <>
-              {data.content.map((review: MyReviewData) => (
-                <OwnerReview
-                  key={review.id}
-                  {...review}
-                  refreshData={refreshData}
-                  handleLastPage={handleLastPage}
-                  openSnackbar={openSnackbar}
-                />
-              ))}
-              <PageNavigator
-                currentPage={data.pageNumber}
-                pages={data.totalPages}
-                handlePageSelect={handlePageSelect}
-              />
-            </>
-          ) : (
-            <div className="w-full text-center">내가 쓴 리뷰가 없습니다.</div>
-          )
-        ) : (
+        {isFetching ? (
           Array.from({ length: 10 }, (_, i) => <OwnerReviewSkeleton key={i} />)
+        ) : data && data.content?.length > 0 ? (
+          data.content.map((review: MyReviewData) => (
+            <OwnerReview
+              key={review.id}
+              {...review}
+              refreshData={refreshData}
+              handleLastPage={handleLastPage}
+              openSnackbar={openSnackbar}
+            />
+          ))
+        ) : (
+          <div className="w-full text-center">내가 쓴 리뷰가 없습니다.</div>
+        )}
+        {data?.totalPages > 0 && (
+          <PageNavigator currentPage={data.pageNumber} pages={data.totalPages} handlePageSelect={handlePageSelect} />
         )}
       </div>
       <Snackbar

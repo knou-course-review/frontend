@@ -45,14 +45,14 @@ const select = (data: any) => {
 export default function CourseReviewContainer({ courseId }: CourseReviewContainerProps) {
   const { snackbar, closeSnackbar, openSnackbar } = useSnackbar();
   const [page, setPage] = useState(1);
-  const { data, error, refetch } = useQuery({
+  const { data, error, refetch, isFetching } = useQuery({
     queryKey: ["all-reviews", page, courseId],
     queryFn: () => fetchAllReviews(page, courseId),
     placeholderData: keepPreviousData,
     select,
   });
 
-  const handlePageSelect = (value: number) => setPage(value);
+  const handlePageSelect = (value = "1") => setPage(Number(value));
   const refreshData = () => refetch();
 
   if (error) return <div className="text-center">오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>;
@@ -66,23 +66,17 @@ export default function CourseReviewContainer({ courseId }: CourseReviewContaine
         <h1 className="mt-2 font-bold text-lg">수강생 리뷰</h1>
       </div>
       <div className="flex flex-col gap-4">
-        {data ? (
-          data.content?.length > 0 ? (
-            <>
-              {data.content.map((review: UserReviewData) => (
-                <UserReview key={review.id} {...review} refreshData={refreshData} openSnackbar={openSnackbar} />
-              ))}
-              <PageNavigator
-                currentPage={data.pageNumber}
-                pages={data.totalPages}
-                handlePageSelect={handlePageSelect}
-              />
-            </>
-          ) : (
-            <div className="w-full mb-40 text-center">수강생 리뷰가 없는 강의입니다.</div>
-          )
-        ) : (
+        {isFetching ? (
           Array.from({ length: 10 }, (_, i) => <UserReviewSkeleton key={i} />)
+        ) : data && data.content?.length > 0 ? (
+          data.content.map((review: UserReviewData) => (
+            <UserReview key={review.id} {...review} refreshData={refreshData} openSnackbar={openSnackbar} />
+          ))
+        ) : (
+          <div className="w-full mb-40 text-center">수강생 리뷰가 없는 강의입니다.</div>
+        )}
+        {data?.totalPages > 0 && (
+          <PageNavigator currentPage={data.pageNumber} pages={data.totalPages} handlePageSelect={handlePageSelect} />
         )}
       </div>
       <Snackbar

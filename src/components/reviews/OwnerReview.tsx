@@ -43,7 +43,7 @@ export default function OwnerReview({
   return (
     <>
       <div
-        className={`w-full p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#aab9e3] dark:bg-[#1d2945] dark:border-slate-600`}
+        className={`w-full p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[#aab9e3] bg-[#fcfcff] dark:bg-[#151f36] dark:border-slate-600`}
       >
         <div className="flex justify-between">
           <div>

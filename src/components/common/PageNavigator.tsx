@@ -24,6 +24,7 @@ const getButtonArray = (totalBatches: number, currentBatch: number, totalPages: 
   );
 
 const getBatches = (pages: number) => {
+  if (pages === 0) return [];
   const array = Array.from({ length: Math.ceil(pages / 5) });
   const batches = array.reduce<Array<number[]>>((acc, _, i) => {
     const buttonArray = getButtonArray(array.length, i + 1, pages);
@@ -33,13 +34,12 @@ const getBatches = (pages: number) => {
 };
 
 export default function PageNavigator({ currentPage, pages, handlePageSelect }: PageNavigatorProps) {
-  const [batches] = useState(getBatches(pages));
+  const batches = useMemo(() => getBatches(pages), [pages]);
   const [currentBatch, setCurrentBatch] = useState(batches.findIndex((batch) => batch.includes(currentPage)) + 1);
-  const buttons = useMemo(() => getButtonArray(batches.length, currentBatch, pages), [currentBatch, pages]);
 
   useEffect(() => {
-    if (batches[currentBatch - 1]?.includes(currentPage)) return;
-    handlePageSelect(buttons[0].toString());
+    if (currentBatch < 1 || batches[currentBatch - 1]?.includes(currentPage)) return;
+    handlePageSelect(batches[currentBatch - 1][0].toString());
   }, [currentBatch]);
 
   const handleClick = (e: React.MouseEvent) => {
@@ -61,6 +61,7 @@ export default function PageNavigator({ currentPage, pages, handlePageSelect }: 
     }
   };
 
+  if (pages === 0) return null;
   return (
     <div className="flex justify-center gap-2 mt-4 items-center">
       <IconButton onClick={() => getBatch("first")} disabled={currentBatch === 1}>
@@ -69,7 +70,7 @@ export default function PageNavigator({ currentPage, pages, handlePageSelect }: 
       <IconButton onClick={() => getBatch("prev")} disabled={currentBatch === 1}>
         <ChevronLeft color={currentBatch === 1 ? "disabled" : "primary"} />
       </IconButton>
-      {buttons.map((page) => (
+      {batches[currentBatch - 1].map((page) => (
         <div
           className={`${commonClasses} ${page == currentPage ? disabledClasses : activeClasses}`}
           key={page}

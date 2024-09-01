@@ -33,7 +33,7 @@ export default function SearchResults({ searchType, name, page }: CourseSearchPa
       ) : (
         <NoResults />
       )}
-      {data && (
+      {data?.totalPages > 0 && (
         <PageNavigator currentPage={data.pageNumber} pages={data.totalPages} handlePageSelect={handlePageSelect} />
       )}
     </div>

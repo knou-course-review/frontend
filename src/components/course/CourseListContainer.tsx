@@ -30,7 +30,7 @@ export default function CourseListContainer({ page }: { page?: string }) {
       ) : (
         <div className="mb-100 text-center">강의 데이터가 없습니다. 관리자에게 문의해 주세요.</div>
       )}
-      {data && (
+      {data?.totalPages > 0 && (
         <PageNavigator
           currentPage={Number(page) ?? data.pageNumber}
           pages={data.totalPages}
