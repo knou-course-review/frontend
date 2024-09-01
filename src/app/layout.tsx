@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ko" suppressHydrationWarning>
       <body className={noto_sans_kr.className}>
         <InitColorSchemeScript defaultMode="system" />
         <ContextProviders>

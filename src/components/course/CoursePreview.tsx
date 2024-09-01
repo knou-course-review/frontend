@@ -22,7 +22,7 @@ export default function CoursePreview({
 }: CoursePreviewProps) {
   return (
     <Link href={`/courses/${id}`} className="w-full">
-      <div className="flex h-40 p-4 sm:p-6 justify-between rounded-2xl border border-[#aab9e3] dark:border-slate-600 dark:bg-[#1d2945] hover:border-[#20c1f5]">
+      <div className="flex h-40 p-4 sm:p-6 justify-between rounded-2xl border border-[#aab9e3] dark:border-slate-600 bg-[#fcfcff] dark:bg-[#1d2945] hover:border-[#20c1f5]">
         <div className="flex flex-col justify-between">
           <h1 className="mb-3 text-xl sm:text-2xl font-semibold">{courseName}</h1>
           <span>{departmentName}</span>

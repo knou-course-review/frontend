@@ -1,6 +1,6 @@
 "use server";
 
-import { saveSession } from "@/lib/auth";
+import { saveSession, verifyAuth } from "@/lib/auth";
 import { ErrorSchema } from "@/schema/error";
 import { LoginFormSchema } from "@/schema/login";
 import { api } from "@/utils/api";
@@ -14,8 +14,9 @@ export async function login(credentials: { username: string; password: string })
       if (res.ok) {
         const bearerToken = res.headers.get("Authorization");
         if (!bearerToken) return;
-        const accessToken = bearerToken.split("Bearer ");
-        saveSession(accessToken[1]);
+        const accessToken = bearerToken.split("Bearer ")[1];
+        const payload = await verifyAuth(accessToken);
+        saveSession(accessToken, payload.exp * 1000);
         return { isValid: true };
       }
       return { isValid: false, invalidCredentials: true };

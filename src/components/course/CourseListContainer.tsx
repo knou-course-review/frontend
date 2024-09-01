@@ -1,31 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import CoursePreview, { type CoursePreviewProps } from "./CoursePreview";
 import CoursePreviewSkeleton from "./CoursePreviewSkeleton";
 import PageNavigator from "../common/PageNavigator";
 
-const fetchAllCourses = (page = 1) => fetch(`/api/courses?page=${page}`).then((res) => res.json());
+const fetchAllCourses = (page = "1") => fetch(`/api/courses?page=${page}`).then((res) => res.json());
 
-export default function CourseListContainer() {
-  const [page, setPage] = useState(1);
-  const { data, error } = useQuery({
+export default function CourseListContainer({ page }: { page?: string }) {
+  const router = useRouter();
+  const { data, error, isFetching } = useQuery({
     queryKey: ["all-courses", page],
     queryFn: () => fetchAllCourses(page),
     placeholderData: keepPreviousData,
   });
 
-  const handlePageSelect = (value: number) => setPage(value);
+  const handlePageSelect = (value = "1") => {
+    router.push(`/?page=${value}`, { scroll: false });
+  };
 
   if (error) return <div className="mb-100 text-center">오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>;
   return (
     <div className="flex flex-col gap-4">
-      {data
-        ? data.content?.map((course: CoursePreviewProps) => <CoursePreview key={course.id} {...course} />)
-        : Array.from({ length: 10 }, (_, i) => <CoursePreviewSkeleton key={i} />)}
+      {isFetching ? (
+        Array.from({ length: 10 }, (_, i) => <CoursePreviewSkeleton key={i} />)
+      ) : data && data.content?.length > 0 ? (
+        data.content.map((course: CoursePreviewProps) => <CoursePreview key={course.id} {...course} />)
+      ) : (
+        <div className="mb-100 text-center">강의 데이터가 없습니다. 관리자에게 문의해 주세요.</div>
+      )}
       {data && (
-        <PageNavigator currentPage={data.pageNumber} pages={data.totalPages} handlePageSelect={handlePageSelect} />
+        <PageNavigator
+          currentPage={Number(page) ?? data.pageNumber}
+          pages={data.totalPages}
+          handlePageSelect={handlePageSelect}
+        />
       )}
     </div>
   );
