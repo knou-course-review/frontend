@@ -43,13 +43,13 @@ export default function NewReviewForm({ courseId, refreshData }: NewReviewFormPr
       });
       if (res.redirected) {
         alert("로그인 세션이 만료되었습니다. 다시 로그인해 주세요.");
-        return router.push("/login");
+        return router.push(res.url);
       }
       const body = await res.json();
       if (body.isSuccess) {
         setContent("");
         refreshData();
-      } else throw Error("오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+      } else throw Error(body.error);
     } catch (e) {
       console.log(e);
       alert(e);
