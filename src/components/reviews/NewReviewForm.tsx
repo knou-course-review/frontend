@@ -1,8 +1,10 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Button, TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { DraftContext } from "@/contexts/draft/DraftContextProvider";
 import useThrottle from "@/hooks/useThrottle";
 
@@ -11,14 +13,25 @@ type NewReviewFormProps = {
   refreshData: () => void;
 };
 
+const CHAR_LIMIT = 255;
+
 export default function NewReviewForm({ courseId, refreshData }: NewReviewFormProps) {
+  const router = useRouter();
   const { getDraft, updateDraft } = useContext(DraftContext);
   const [content, setContent] = useState(getDraft(Number(courseId))?.content ?? "");
-  const throttledValue = useThrottle(content, 3000);
+  const throttledValue = useThrottle(content, 2000);
 
   useEffect(() => {
     updateDraft(Number(courseId), content);
   }, [throttledValue]);
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    if (input.length > CHAR_LIMIT) {
+      return;
+    }
+    setContent(input);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,6 +41,10 @@ export default function NewReviewForm({ courseId, refreshData }: NewReviewFormPr
         method: "POST",
         body: JSON.stringify({ content }),
       });
+      if (res.redirected) {
+        alert("로그인 세션이 만료되었습니다. 다시 로그인해 주세요.");
+        return router.push("/login");
+      }
       const body = await res.json();
       if (body.isSuccess) {
         setContent("");
@@ -47,7 +64,7 @@ export default function NewReviewForm({ courseId, refreshData }: NewReviewFormPr
       </div>
       <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
         <TextField
-          onChange={(e) => setContent(e.target.value)}
+          onChange={handleInput}
           value={content}
           name="content"
           placeholder="본 강의를 수강하셨나요? 리뷰를 남겨주세요!"
