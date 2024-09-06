@@ -42,7 +42,7 @@ export default function NewReviewForm({ courseId, refreshData }: NewReviewFormPr
         body: JSON.stringify({ content }),
       });
       if (res.redirected) {
-        alert("로그인 세션이 만료되었습니다. 다시 로그인해 주세요.");
+        alert("로그인 세션이 만료되었습니다. 다시 로그인해 주세요.\n작성하신 리뷰는 임시저장됩니다.");
         return router.push(res.url);
       }
       const body = await res.json();
