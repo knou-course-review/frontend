@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "./lib/auth";
 
 export async function middleware(req: NextRequest) {
-  const originUrl = req.nextUrl.origin;
   const path = req.nextUrl.pathname;
+  if (path.startsWith("/api")) return NextResponse.next();
+
+  const originUrl = req.nextUrl.origin;
   const userSession = await getSession();
 
   if (path === "/login") {

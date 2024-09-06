@@ -6,7 +6,7 @@ import { getSession } from "@/lib/auth";
 export async function GET(req: NextRequest) {
   // 리뷰 GET 요청은 토큰 필요
   const userSession = await getSession();
-  if (!userSession.isLoggedIn || !userSession.token) return NextResponse.json({});
+  if (!userSession.isLoggedIn || !userSession.token) return NextResponse.redirect(new URL("/login", req.url), 302);
 
   const { searchParams } = new URL(req.url);
   const reviewIdQuery = searchParams.get("rid");
@@ -43,6 +43,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const userSession = await getSession();
+  if (!userSession.isLoggedIn || !userSession.token) return NextResponse.redirect(new URL("/login", req.url), 302);
+
   const { searchParams } = new URL(req.url);
   const courseId = searchParams.get("cid");
   if (!courseId) return NextResponse.json({ error: "No course id" });
@@ -56,6 +59,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
+  const userSession = await getSession();
+  if (!userSession.isLoggedIn || !userSession.token) return NextResponse.redirect(new URL("/login", req.url), 302);
+
   const { searchParams } = new URL(req.url);
   const courseId = searchParams.get("cid");
   if (!courseId) return NextResponse.json({ error: "No course id" });
