@@ -72,9 +72,12 @@ export default function NewReviewForm({ courseId, refreshData }: NewReviewFormPr
           minRows={4}
           maxRows={10}
         />
-        <Button className="self-end" type="submit" variant="contained" disableElevation>
-          리뷰 등록
-        </Button>
+        <div className="self-end">
+          {content.length} / {CHAR_LIMIT}
+          <Button className="ml-4 self-end" type="submit" variant="contained" disableElevation>
+            리뷰 등록
+          </Button>
+        </div>
       </form>
     </div>
   );
