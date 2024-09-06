@@ -1,11 +1,11 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { DraftContext } from "@/contexts/draft/DraftContextProvider";
+import useAuthContext from "@/hooks/useAuthContext";
 import useThrottle from "@/hooks/useThrottle";
 
 type NewReviewFormProps = {
@@ -16,7 +16,7 @@ type NewReviewFormProps = {
 const CHAR_LIMIT = 255;
 
 export default function NewReviewForm({ courseId, refreshData }: NewReviewFormProps) {
-  const router = useRouter();
+  const { updateSession } = useAuthContext();
   const { getDraft, updateDraft } = useContext(DraftContext);
   const [content, setContent] = useState(getDraft(Number(courseId))?.content ?? "");
   const throttledValue = useThrottle(content, 2000);
@@ -42,8 +42,11 @@ export default function NewReviewForm({ courseId, refreshData }: NewReviewFormPr
         body: JSON.stringify({ content }),
       });
       if (res.redirected) {
-        alert("로그인 세션이 만료되었습니다. 다시 로그인해 주세요.\n작성하신 리뷰는 임시저장됩니다.");
-        return router.push(res.url);
+        alert(
+          "로그인 세션이 만료되었습니다. 다시 로그인해 주세요.\n작성하신 리뷰는 탭이 열려있는 한 임시저장됩니다."
+        );
+        updateSession({ isLoggedIn: false });
+        return;
       }
       const body = await res.json();
       if (body.isSuccess) {
