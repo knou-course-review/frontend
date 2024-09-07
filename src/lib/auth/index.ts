@@ -11,7 +11,7 @@ type UserJwtPayload = {
 };
 
 // Functions for JWT verification
-export const getJwtSecretKey = () => {
+const getJwtSecretKey = () => {
   const secret = process.env.JWT_SECRET;
   if (!secret || secret.length === 0) {
     throw new Error("Missing JWT secret key.");
@@ -26,13 +26,13 @@ export async function verifyAuth(token: string) {
 }
 
 // Session functions
-export async function saveSession(value: string, expires: number) {
+export async function saveSession(value: string, expires?: number) {
   cookies().set("knous", value, {
     httpOnly: true,
     secure: true,
-    expires,
     sameSite: "lax",
     path: "/",
+    ...(expires && { expires }),
   });
 }
 

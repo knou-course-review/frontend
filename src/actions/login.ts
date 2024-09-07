@@ -10,7 +10,10 @@ const ERROR_MSG = {
   token: "* 사용자 정보를 검증할 수 없습니다. 관리자에 문의해 주세요.",
 };
 
-export async function login(credentials: { username: string; password: string }) {
+export async function login(
+  credentials: { username: string; password: string },
+  sessionCheck: null | FormDataEntryValue
+) {
   const validatedForm = LoginFormSchema.safeParse(credentials);
   if (validatedForm.success) {
     try {
@@ -24,7 +27,8 @@ export async function login(credentials: { username: string; password: string })
           };
         const accessToken = bearerToken.split("Bearer ")[1];
         const payload = await verifyAuth(accessToken);
-        saveSession(accessToken, payload.exp * 1000);
+        if (sessionCheck === null) saveSession(accessToken);
+        else saveSession(accessToken, payload.exp * 1000);
         return { isValid: true };
       }
       return { isValid: false, errors: { credentials: [ERROR_MSG.credentials] } };
