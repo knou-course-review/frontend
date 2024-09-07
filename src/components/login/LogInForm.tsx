@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
@@ -29,7 +31,7 @@ export default function LoginForm() {
       username: formData.get("username") as string,
       password: formData.get("password") as string,
     };
-    const res = await login(loginCredentials);
+    const res = await login(loginCredentials, formData.get("session"));
     if (res.isValid) {
       updateSession({ isLoggedIn: true });
       return router.push("/");
@@ -40,7 +42,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleLogin} className="flex flex-col w-56 sm:w-80 gap-4">
+    <form onSubmit={handleLogin} className="flex flex-col w-56 sm:w-80 gap-2">
       <div>
         <TextField name="username" size="small" placeholder="아이디" fullWidth />
         {error.username && <FormHelperText error>{error.username[0]}</FormHelperText>}
@@ -62,10 +64,15 @@ export default function LoginForm() {
         />
         {error.password && <FormHelperText error>{error.password[0]}</FormHelperText>}
       </div>
+      <div>
+        <FormControlLabel label="로그인 유지" name="session" control={<Checkbox size="small" />} />
+      </div>
       {error.credentials && <FormHelperText error>{error.credentials[0]}</FormHelperText>}
-      <Button type="submit" variant="contained" size="large" className="mt-6" disabled={pending} disableElevation>
-        로그인
-      </Button>
+      <div className="mt-6 w-full">
+        <Button type="submit" variant="contained" size="large" disabled={pending} fullWidth disableElevation>
+          로그인
+        </Button>
+      </div>
     </form>
   );
 }
