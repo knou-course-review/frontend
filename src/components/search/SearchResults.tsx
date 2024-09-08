@@ -6,6 +6,7 @@ import CoursePreview, { type CoursePreviewProps } from "../course/CoursePreview"
 import CoursePreviewSkeleton from "../course/CoursePreviewSkeleton";
 import NoResults from "./NoResults";
 import PageNavigator from "../common/PageNavigator";
+import { STALE_TIME } from "@/constants/query";
 import type { CourseSearchParams } from "@/app/search/page";
 
 const fetchCourses = (page: string, searchType: string, name: string) =>
@@ -17,6 +18,8 @@ export default function SearchResults({ searchType, name, page }: CourseSearchPa
     queryKey: ["search-results", page, searchType, name],
     queryFn: () => fetchCourses(page, searchType, name),
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
+    staleTime: STALE_TIME.courses,
   });
 
   const handlePageSelect = (value = "1") => {
