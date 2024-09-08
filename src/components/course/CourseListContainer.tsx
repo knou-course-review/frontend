@@ -5,8 +5,18 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import CoursePreview, { type CoursePreviewProps } from "./CoursePreview";
 import CoursePreviewSkeleton from "./CoursePreviewSkeleton";
 import PageNavigator from "../common/PageNavigator";
+import { STALE_TIME } from "@/constants/query";
 
 const fetchAllCourses = (page = "1") => fetch(`/api/courses?page=${page}`).then((res) => res.json());
+
+const select = (data: any) => {
+  const combinedContent = data.content.map((course: any) => {
+    const [reviews] = data.reviews.filter((reviewData: any) => reviewData.courseId === course.id);
+    return { ...course, reviews };
+  });
+  console.log(combinedContent);
+  return { ...data, content: combinedContent };
+};
 
 export default function CourseListContainer({ page }: { page?: string }) {
   const router = useRouter();
@@ -14,6 +24,9 @@ export default function CourseListContainer({ page }: { page?: string }) {
     queryKey: ["all-courses", page],
     queryFn: () => fetchAllCourses(page),
     placeholderData: keepPreviousData,
+    select,
+    refetchOnWindowFocus: false,
+    staleTime: STALE_TIME.courses,
   });
 
   const handlePageSelect = (value = "1") => {
