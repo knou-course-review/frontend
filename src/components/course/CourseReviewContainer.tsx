@@ -50,6 +50,7 @@ export default function CourseReviewContainer({ courseId }: CourseReviewContaine
     queryFn: () => fetchAllReviews(page, courseId),
     placeholderData: keepPreviousData,
     select,
+    refetchOnWindowFocus: false,
   });
 
   const handlePageSelect = (value = "1") => setPage(Number(value));
