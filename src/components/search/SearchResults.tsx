@@ -12,12 +12,22 @@ import type { CourseSearchParams } from "@/app/search/page";
 const fetchCourses = (page: string, searchType: string, name: string) =>
   fetch(`/api/search?searchType=${searchType}&name=${name}&page=${page}`).then((res) => res.json());
 
+const select = (data: any) => {
+  const combinedContent = data.content.map((course: any) => {
+    const [reviews] = data.reviews.filter((reviewData: any) => reviewData.courseId === course.id);
+    return { ...course, reviews };
+  });
+  console.log(combinedContent);
+  return { ...data, content: combinedContent };
+};
+
 export default function SearchResults({ searchType, name, page }: CourseSearchParams) {
   const router = useRouter();
   const { data, error, isFetching } = useQuery({
     queryKey: ["search-results", page, searchType, name],
     queryFn: () => fetchCourses(page, searchType, name),
     placeholderData: keepPreviousData,
+    select,
     refetchOnWindowFocus: false,
     staleTime: STALE_TIME.courses,
   });
