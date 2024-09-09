@@ -13,7 +13,7 @@ type NewReviewFormProps = {
   refreshData: () => void;
 };
 
-const CHAR_LIMIT = 255;
+const CHAR_LIMIT = 1000;
 
 export default function NewReviewForm({ courseId, refreshData }: NewReviewFormProps) {
   const { updateSession } = useAuthContext();
@@ -42,9 +42,7 @@ export default function NewReviewForm({ courseId, refreshData }: NewReviewFormPr
         body: JSON.stringify({ content }),
       });
       if (res.redirected) {
-        alert(
-          "로그인 세션이 만료되었습니다. 다시 로그인해 주세요.\n작성하신 리뷰는 탭이 열려있는 한 임시저장됩니다."
-        );
+        alert("로그인 세션이 만료되었습니다. 다시 로그인해 주세요.\n작성하신 리뷰는 탭이 열려있는 한 임시저장됩니다.");
         updateSession({ isLoggedIn: false });
         return;
       }
@@ -76,7 +74,7 @@ export default function NewReviewForm({ courseId, refreshData }: NewReviewFormPr
           maxRows={10}
         />
         <div className="self-end">
-          {content.length} / {CHAR_LIMIT}
+          {content.length.toLocaleString("ko-KR")} / {CHAR_LIMIT.toLocaleString("ko-KR")}
           <Button className="ml-4 self-end" type="submit" variant="contained" disableElevation>
             리뷰 등록
           </Button>
