@@ -10,8 +10,13 @@ export async function GET(req: NextRequest) {
   try {
     const res = await api.get(`/api/v2/courses/search?page=${pageQuery}&searchType=${searchType}&name=${name}`);
     if (res.status === 200) {
-      const body = await res.json();
-      return NextResponse.json(body.data);
+      const pageBody = await res.json();
+      if (pageBody.data.content.length === 0) return NextResponse.json({ ...pageBody.data, likes: [] });
+      const courseIds = pageBody.data.content.map((item: any) => item.id);
+      const reviewsQuery = courseIds.map((id: number) => "courseIds=" + id.toString()).join("&");
+      const reviewsRes = await api.get(`/api/v1/review-count?${reviewsQuery}`);
+      const reviewsBody = await reviewsRes.json();
+      return NextResponse.json({ ...pageBody.data, reviews: reviewsBody.data });
     }
   } catch (e) {
     console.log(e);
