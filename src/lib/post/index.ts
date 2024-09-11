@@ -12,6 +12,10 @@ type PostData = {
   title: string;
 };
 
+type PostContent = PostData & {
+  contentHtml: string;
+};
+
 const postsDirectory = path.join(process.cwd(), "news");
 
 export function getSortedPosts(): PostData[] {
@@ -38,5 +42,5 @@ export async function getPostContent(id: string) {
     id,
     contentHtml,
     ...matterResult.data,
-  };
+  } as PostContent;
 }

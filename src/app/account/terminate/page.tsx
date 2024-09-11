@@ -1,7 +1,7 @@
-import { Metadata } from "next";
 import Divider from "@mui/material/Divider";
 import NavBackButton from "@/components/nav/NavBackButton";
 import TerminationForm from "@/components/account/TerminationForm";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "회원 탈퇴 - 노우강",

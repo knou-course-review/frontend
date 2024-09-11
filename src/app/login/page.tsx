@@ -1,6 +1,6 @@
-import { Metadata } from "next";
 import Link from "next/link";
 import LoginForm from "@/components/login/LogInForm";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "로그인 - 노우강",
