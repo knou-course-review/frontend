@@ -18,24 +18,28 @@ type PostContent = PostData & {
 
 const postsDirectory = path.join(process.cwd(), "news");
 
-export async function getSortedPosts(): Promise<PostData[]> {
+export function getSortedPosts(): PostData[] {
   const fileNames = fs.readdirSync(postsDirectory);
-  console.log(fileNames);
   const allPosts = fileNames.map((fileName) => {
     const id = fileName.replace(/\.md$/, "");
     const fullPath = path.join(postsDirectory, fileName);
     const fileContents = fs.readFileSync(fullPath, "utf8");
-    console.log(fileContents);
+
     const matterResult = matter(fileContents);
     return { id, ...matterResult.data } as PostData;
   });
   return allPosts.sort((a, b) => b.date.localeCompare(a.date));
 }
 
+export async function getPosts() {
+  const posts = getSortedPosts();
+  return posts;
+}
+
 export async function getPostContent(id: string) {
   const fullPath = path.join(postsDirectory, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
-  console.log(fileContents);
+
   const matterResult = matter(fileContents);
   const processedContent = await remark().use(html).process(matterResult.content);
   const contentHtml = processedContent.toString();
