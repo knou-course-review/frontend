@@ -17,7 +17,6 @@ const select = (data: any) => {
     const [reviews] = data.reviews.filter((reviewData: any) => reviewData.courseId === course.id);
     return { ...course, reviews };
   });
-  console.log(combinedContent);
   return { ...data, content: combinedContent };
 };
 
