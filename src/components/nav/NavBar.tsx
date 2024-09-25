@@ -20,7 +20,7 @@ export default function NavBar() {
       <Link href="/">
         <Image src="/logo480x480.svg" width={32} height={32} alt="노우강 로고" priority />
       </Link>
-      <div className="flex gap-7 ml-auto list-none">
+      <div className="flex gap-4 sm:gap-7 ml-auto list-none">
         <li>
           <Link href="/news" className="orange-link">
             공지

@@ -28,7 +28,7 @@ export function getSortedPosts(): PostData[] {
     const matterResult = matter(fileContents);
     return { id, ...matterResult.data } as PostData;
   });
-  return allPosts.sort((a, b) => a.date.localeCompare(b.date));
+  return allPosts.sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export async function getPostContent(id: string) {
