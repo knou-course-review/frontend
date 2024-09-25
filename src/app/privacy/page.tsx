@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "개인정보처리방침 - 노우강",
@@ -16,7 +16,7 @@ export default function PrivacyPolicy() {
 
       <h2 className="mt-6 font-semibold">1. 개인정보의 처리 목적</h2>
       <p>회사는 회원의 개인정보를 다음의 목적으로 처리하며, 본 약관에 명시된 이외의 용도로 처리하지 않습니다.</p>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="mt-2 ml-2">
           홈페이지 회원가입 및 관리
           <br />
@@ -43,7 +43,7 @@ export default function PrivacyPolicy() {
 
       <h2 className="mt-6 font-semibold">2. 처리하는 개인정보의 항목 및 보유 기간</h2>
       <p>회사는 노우강 서비스 제공을 정보주체의 아래 개인정보를 회원 탈퇴 시까지 보유 및 처리합니다.</p>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="mt-2 ml-2">
           로그인 ID, 이메일
           <br />
@@ -56,7 +56,7 @@ export default function PrivacyPolicy() {
         </li>
       </ol>
       <p className="mt-4">인터넷 서비스 특성상 이용과정에서 아래와 같은 정보가 추가로 수집될 수 있습니다.</p>
-      <ul className="list-disc list-inside">
+      <ul>
         <li className="mt-2 ml-2">
           쿠키
           <br />
@@ -69,7 +69,7 @@ export default function PrivacyPolicy() {
         회사는 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체 없이 해당 개인정보를
         파기합니다. 개인정보 파기의 절차 및 방법은 다음과 같습니다.
       </p>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="mt-2 ml-2">
           파기절차
           <br />
@@ -85,7 +85,7 @@ export default function PrivacyPolicy() {
 
       <h2 className="mt-6 font-semibold">4. 개인정보의 안전성 확보조치</h2>
       <p>회사는 정보주체의 개인정보를 안전하게 처리하기 위해 다음과 같은 조치를 취하고 있습니다.</p>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="mt-2 ml-2">"개인정보의 안전성 확보조치 기준"에 의거한 내부관리계획을 수립 및 시행합니다.</li>
         <li className="mt-2 ml-2">
           개인정보취급자 및 개인정보에 대한 내부관계자의 접근을 최소화하고 정기적인 직원 교육을 실시합니다.
@@ -101,7 +101,7 @@ export default function PrivacyPolicy() {
         쿠키에 저장되지 않습니다.
       </p>
       <p className="mt-4">회원은 다음과 같은 방법을 통해 쿠키 저장을 거부할 수 있습니다.</p>
-      <ul className="list-disc list-inside">
+      <ul>
         <li className="mt-2 ml-2">
           Chrome: [설정] &gt; [개인 정보 보호 및 보안] &gt; [사이트 설정] &gt; [추가 콘텐츠 설정] &gt; [기기 내 사이트
           데이터] 메뉴에서 저장 여부 설정
@@ -113,7 +113,7 @@ export default function PrivacyPolicy() {
 
       <h2 className="mt-6 font-semibold">6. 정보주체 및 법정대리인의 권리・의무 및 행사방법</h2>
       <p>정보주체는 회사에 대해 언제든지 다음 각 호의 개인정보 보호 관련 권리를 행사할 수 있습니다.</p>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="mt-2 ml-2">개인정보 열람요구</li>
         <li className="mt-2 ml-2">오류 등이 있을 경우 정정 요구</li>
         <li className="mt-2 ml-2">삭제요구</li>
@@ -155,7 +155,7 @@ export default function PrivacyPolicy() {
 
       <h2 className="mt-6 font-semibold">8. 권익침해에 대한 구제방법</h2>
       <p>정보주체는 아래의 기관에 대해 개인정보 침해에 대한 피해구제, 상담 등을 문의하실 수 있습니다.</p>
-      <ul className="list-disc list-inside">
+      <ul>
         <li className="mt-2 ml-2">
           개인정보 침해신고센터: (국번없이) 118
           <br />
@@ -184,7 +184,7 @@ export default function PrivacyPolicy() {
         회사는 이 개인정보처리방침의 내용에 변경이 있을 경우 개정 시행 최소 7일 전에 홈페이지에 공지할 것입니다. 이전에
         개정된 개인정보처리방침의 내용은 아래에서 확인하실 수 있습니다.
       </p>
-      <ul className="list-disc list-inside">
+      <ul>
         <li className="mt-2 ml-2">2024-08-26(최신 문서): 최초 시행</li>
       </ul>
     </article>

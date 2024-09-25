@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "서비스 이용약관 - 노우강",
@@ -13,7 +13,7 @@ export default function TermsOfUse() {
 
       <h2 className="mt-4 font-semibold">2. 용어의 정의</h2>
       <p>본 약관에서 사용하는 용어는 다음과 같이 정의됩니다.</p>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="mt-2 ml-2">
           이용자: 사이트에 접속하여 본 약관에 따라 회사가 제공하는 서비스를 받는 회원 및 비회원을 말합니다.
         </li>
@@ -31,7 +31,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">3. 약관의 효력 및 변경</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">회사는 본 약관의 내용을 회원이 확인할 수 있도록 서비스 화면에 개시합니다.</li>
         <li className="mt-2 ml-2">
           회사는 필요한 경우 관련 법령을 위배하지 않는 범위 내에서 본 약관을 개정할 수 있습니다.
@@ -47,7 +47,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">4. 약관 외 준칙</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">본 약관에서 정하지 아니한 사항에 대해서는 관계법령 또는 상관례에 따릅니다.</li>
         <li className="mt-2 ml-2">
           회사는 필요한 경우 본 약관과 더불어 별도의 운영정책을 수립할 수 있으며, 본 약관과 운영정책이 중첩될 경우
@@ -56,7 +56,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">5. 서비스 제공 및 변경</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">
           회사는 회원에게 다음과 같은 서비스를 제공합니다.
           <p className="ml-2">
@@ -79,7 +79,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">6. 서비스의 중단</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">
           회사는 서비스의 제공에 필요한 경우 정기점검을 실시할 수 있으며, 정기점검 중에는 서비스 제공이 일시적으로
           중단될 수 있습니다.
@@ -91,7 +91,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">7. 회원가입</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">
           이용계약은 이용자의 서비스 이용 신청에 대한 회사의 이용 승낙과 이용자의 약관 내용에 대한 동의로 체결됩니다.
         </li>
@@ -111,7 +111,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">8. 회원 탈퇴 및 자격 상실 등</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">회원은 회사에 언제든지 탈퇴를 요청할 수 있으며 회사는 즉시 회원 탈퇴를 처리합니다.</li>
         <li className="mt-2 ml-2">
           회원이 다음 각 호의 사유에 해당하는 경우, 회사는 회원자격을 제한 및 정지시킬 수 있습니다.
@@ -133,7 +133,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">9. 회원에 대한 통지</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">
           회사가 회원에 대한 통지를 하는 경우, 회원이 회사와 미리 약정하여 지정한 전자우편 주소로 할 수 있습니다. 회원이
           전자우편 주소를 잘못 제출하여 통지가 이루어지지 않는 경우 회사는 회원이 제출한 정보로 발송한 때에 회원에
@@ -146,7 +146,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">10. 회사의 의무</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">
           회사는 법령과 본 약관이 금지하거나 공서양속에 반하는 행위를 하지 않으며 본 약관이 정하는 바에 따라 지속적이고,
           안정적으로 서비스를 제공하는 데 최선을 다합니다.
@@ -159,7 +159,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">11. 회원의 ID 및 비밀번호에 대한 의무</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">제13조의 경우를 제외한 이메일 ID와 비밀번호에 관한 관리 책임은 회원에게 있습니다.</li>
         <li className="mt-2 ml-2">회원은 자신의 ID 및 비밀번호를 제3자에게 이용하게 해서는 안됩니다.</li>
         <li className="mt-2 ml-2">
@@ -177,7 +177,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">12. 회원의 의무</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">
           이용자는 다음 행위를 하여서는 안됩니다.
           <p className="ml-2">(1) 개인정보의 등록(변경의 경우를 포함) 시 허위 내용을 등록</p>
@@ -213,7 +213,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">13. 개인정보보호</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">
           회사는 회원의 정보 수집 시 서비스의 제공에 필요한 최소한의 정보를 수집합니다. 다음 사항을 필수사항으로 하며 그
           외 사항은 선택사항으로 합니다.
@@ -261,7 +261,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">14. 저작권의 귀속 및 이용제한</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">회사가 작성한 저작물에 대한 저작권 및 기타 지식재산권은 회사에 귀속합니다.</li>
         <li className="mt-2 ml-2">
           회원은 서비스를 이용하면서 얻은 정보를 회사의 사전 승인 없이 복제, 송신, 출판, 배포 등 기타 영리적인 목적으로
@@ -280,7 +280,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">15. 면책</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">
           회사는 천재지변, 불가항력 및 기타 회사의 합리적인 통제 범위를 벗어난 사유로 인하여 서비스를 제공할 수 없는
           경우에는 그에 대한 책임을 부담하지 않습니다.
@@ -305,7 +305,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">16. 분쟁해결</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">
           회사는 이용자로부터 제출되는 불만사항 및 의견을 우선적으로 처리합니다. 다만, 신속한 처리가 곤란한 경우에는
           이용자에게 그 사유와 처리 일정을 통보합니다.
@@ -317,7 +317,7 @@ export default function TermsOfUse() {
       </ol>
 
       <h2 className="mt-4 font-semibold">17. 재판권 및 준거법</h2>
-      <ol className="list-decimal list-inside">
+      <ol>
         <li className="ml-2">
           제16조의 협의에서도 분쟁이 해결되지 않을 경우 양 당사자는 민사소송법상의 관할법원에 소를 제기할 수 있습니다.
         </li>

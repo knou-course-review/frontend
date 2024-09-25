@@ -1,9 +1,9 @@
-import { Metadata } from "next";
 import Link from "next/link";
 import Divider from "@mui/material/Divider";
 import AccountInfoForm from "@/components/account/AccountInfoForm";
 import NavTabs from "@/components/nav/NavTabs";
 import { getAccountInfo } from "@/actions/account";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "내 정보 수정 - 노우강",

@@ -2,9 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  ul,
+  ol {
+    list-style: revert;
+    list-style-position: inside;
+  }
+}
+
 :root {
   --foreground-color: rgb(52, 52, 52);
   --background-color: rgb(255, 255, 255);
+  --foreground-primary-color: #2272eb;
   --foreground-secondary-color: #ebae1c;
 }
 
@@ -28,4 +37,12 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.blog-post a {
+  color: var(--foreground-primary-color);
+}
+
+.blog-post a:hover {
+  color: var(--foreground-secondary-color);
 }
